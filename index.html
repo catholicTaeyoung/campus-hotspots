@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미콘 선배의 캠퍼스 핫스팟</title>
+  <style>
+    /* 목록 항목 스타일 */
+    ol li {
+      margin-bottom: 20px;
+    }
+    
+    /* 이미지와 텍스트 영역을 좌우로 나란히 배치 */
+    .hotspot-item {
+      display: flex;             
+      align-items: center;       
+      gap: 15px;                 
+    }
+
+    /* 이미지 크기를 1/4(25%)로 축소 */
+    .hotspot-img {
+      width: 25%;
+      height: auto;
+      flex-shrink: 0;            
+    }
+
+    /* 하이퍼링크 스타일 (파란색 글자와 밑줄) */
+    .hotspot-link {
+      color: #0000EE;            /* 기본 하이퍼링크 파란색 */
+      text-decoration: underline;/* 밑줄 표시 */
+    }
+    
+    /* 방문한 링크 색상 유지 (선택사항) */
+    .hotspot-link:visited {
+      color: #551A8B;
+    }
+
+    /* 방문하기 좋은 순서 안내 문구 스타일 (선택사항) */
+    .visit-order-guide {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>미콘 선배의 캠퍼스 핫스팟</h1>
+    <p>미콘 학생이라면 갈 수 밖에 없는 세 장소를 소개합니다.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>탐험할 장소</h2>
+      
+      <!-- 추가된 안내 문구 -->
+      <p class="visit-order-guide">D411, B333, 중앙도서관 순으로 세 장소를 방문하기 좋은 순서입니다.</p>
+
+      <ol>
+        <li>
+          <div class="hotspot-item">
+            <img src="images/d411.jpg" alt="프로그램 실습실 D411" class="hotspot-img">
+            <a href="d411.html" class="hotspot-link">포토샵, 프리미어 등 콘텐츠 제작을 위한 프로그램 실습실 D411</a>
+          </div>
+        </li>
+        <li>
+          <div class="hotspot-item">
+            <img src="images/b333.jpg" alt="프로그램 실습실 B333" class="hotspot-img">
+            <a href="b333.html" class="hotspot-link">뷰가 뻥 뚫려있어 경치가 좋은 프로그램 실습실 B333</a>
+          </div>
+        </li>
+        <li>
+          <div class="hotspot-item">
+            <img src="images/library.jpg" alt="중앙도서관" class="hotspot-img">
+            <a href="library.html" class="hotspot-link">밤샘 과제할 때 머물러야 하는 여러분의 작업실 중앙도서관</a>
+          </div>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <p><small><strong>출처 안내</strong> — 사진: 본인 직접 촬영 / 정보: 작성자 본인 작성</small></p>
+  </footer>
+
+</body>
+</html>
