@@ -153,19 +153,6 @@ a:focus-visible {
         box-shadow: 0 18px 35px rgba(99, 102, 241, 0.18);
     }
 
-    /* 각 핫스폿 카드에 색상 포인트를 다르게 주고 싶을 때 (N번째 카드 스타일링) */
-    .page-home .hotspot-item:nth-child(1) {
-        background: linear-gradient(135deg, #ffffff 80%, #eeefff 100%);
-    }
-
-    .page-home .hotspot-item:nth-child(2) {
-        background: linear-gradient(135deg, #ffffff 80%, #fef08a 100%); /* 약간의 상큼한 노란 톤 조화 */
-    }
-
-    .page-home .hotspot-item:nth-child(3) {
-        background: linear-gradient(135deg, #ffffff 80%, #fbcfe8 100%); /* 약간의 발랄한 핑크 톤 조화 */
-    }
-
         /* 핫스폿 링크 텍스트 (크고 굵은 글씨) */
         .page-home .hotspot-link {
             display: inline-block;
@@ -200,7 +187,7 @@ a:focus-visible {
    ========================================== */
 .page-d411 {
     /* 노을빛 피치 핑크, 따뜻한 앰버 오렌지, 은은한 포근함의 그라데이션 */
-    background: linear-gradient(135deg, #fff1f2 0%, #ffedd5 45%, #fef3c7 80%, #f0fdf4 100%);
+    background-color: #ffedd5;
     color: #431407;
     /* 둥글둥글한 손글씨/둥근고딕 폰트 적용 */
     font-family: 'DungGeunMo', sans-serif;
@@ -247,7 +234,10 @@ a:focus-visible {
         text-decoration: none;
     }
 
-
+    .page-d411 .panel:hover {
+        transform: translateY(-3px); /* 들림 효과 */
+        box-shadow: 0 14px 30px -5px rgba(22, 101, 52, 0.12);
+    }
 
 
     /*----------------*/
@@ -322,8 +312,8 @@ a:focus-visible {
    - 컨셉: 픽셀 아트 스타일의 레트로 (8-Bit Arcade & Retro)
    ========================================== */
 .page-b333 {
-    background-color: #1a1c23;
-    background-image: radial-gradient(#2d323f 15%, transparent 16%), radial-gradient(#2d323f 15%, transparent 16%);
+    background-color: #2f3e65;
+    background-image: radial-gradient(#515c72 15%, transparent 16%), radial-gradient(#374259 15%, transparent 16%);
     background-size: 16px 16px;
     background-position: 0 0, 8px 8px;
     color: #00ff66;
@@ -370,7 +360,7 @@ a:focus-visible {
    - 컨셉: 시원하고 파도 소리가 들리는 듯한 청량함 (Ocean & Aqua Breeze)
    ========================================== */
 .page-library {
-    background: linear-gradient(180deg, #0284c7 0%, #0369a1 40%, #0c4a6e 100%);
+    background-color: #0369a1;
     color: #e0f2fe;
     font-family: 'Noto Sans KR', system-ui, sans-serif;
     min-height: 100vh;
@@ -437,9 +427,43 @@ a:focus-visible {
 /***********************/
 /* 모바일 기기가 '다크 모드'일 때 작동하는 미디어 쿼리 */
 @media (max-width: 600px) and (prefers-color-scheme: dark) {
-    .page {
+    .page-home {
         width: 94%;
         padding: 1rem 0;
+        background-color: #0A1128; /**/
+        color: #ffffff;
+    }
+
+        /* 둥글둥글한 핫스폿 카드 아이템 */
+        .page-home .hotspot-item {
+
+            background-color: #000121;
+
+        }
+        .page-home .hotspot-link{
+            color: #ffffff;
+        }
+
+    .page-d411 {
+        background-color: #311119;
+        color: #ffffff;
+    }
+        .page-d411 h1 {
+            color: #e6c972;
+        }
+
+    .page-b333 {
+        background-color: #0d0e12;
+        background-image: radial-gradient(#2d323f 15%, transparent 16%), radial-gradient(#2d323f 15%, transparent 16%);
+    }
+
+    .page-library {
+        background-color: #00153f;
+        color: #bae6fd;
+    }
+
+    .page-b333, .page-d411, .page-library, .panel, .action {
+        transition: background-color 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     .panel {

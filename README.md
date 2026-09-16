@@ -42,3 +42,10 @@
 
 ### 출처
 - 새로 사용한 이미지·웹폰트의 출처(사용한 경우):
+
+| 서체명 (Font Name) | 구편 / 출처 분류 | 원본 링크 / 폰트 웹사이트 |
+| :--- | :--- | :--- |
+| **Noto Sans KR** | Google Fonts | [Google Fonts - Noto Sans KR](https://fonts.google.com/specimen/Noto+Sans+KR) |
+| **Noto Serif KR** | Google Fonts | [Google Fonts - Noto Serif KR](https://fonts.google.com/specimen/Noto+Serif+KR) |
+| **Press Start 2P** | Google Fonts | [Google Fonts - Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P) |
+| **둥근모꼴** | 눈누 (Noonnu CDN) | [눈누 - 둥근모꼴](https://noonnu.cc/font_page/28) |
