@@ -426,13 +426,39 @@ a:focus-visible {
         font-size: 1.8rem;
     }
 
-    .page-b333 h1 {
-        font-size: 1.3rem;
+    .action {
+        display: block;
+        text-align: center;
+        padding: 0.9em;
+    }
+}
+
+
+/***********************/
+/* 모바일 기기가 '다크 모드'일 때 작동하는 미디어 쿼리 */
+@media (max-width: 600px) and (prefers-color-scheme: dark) {
+    .page {
+        width: 94%;
+        padding: 1rem 0;
+    }
+
+    .panel {
+        padding: 1.2rem;
+        margin: 1rem 0;
+        background-color: #1e1e1e; /**/
+        border: 1px solid #333; /**/
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /**/
+    }
+
+    .page h1 {
+        font-size: 1.8rem;
     }
 
     .action {
         display: block;
         text-align: center;
         padding: 0.9em;
+        background-color: #bb86fc; /**/
+        color: #000; /**/
     }
 }
