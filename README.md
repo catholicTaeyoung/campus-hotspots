@@ -35,10 +35,13 @@
 - 적용한 @media 조건:
 - 모바일에서 특별히 바뀌는 부분과 이유:
 - 휴대전화에서 네 페이지를 확인한 결과:
-![휴대전화 폭에서 본 D411 페이지](images/mobile-d411.png)  
-![휴대전화 폭에서 본 B333 페이지](images/mobile-b333.png)  
-![휴대전화 폭에서 본 중앙도서관 페이지](images/mobile-library.png)
 
+| 페이지 | 휴대전화 폭 이미지 |
+| --- | --- |
+| 메인페이지 | <img src="images/mobile-home.png" width="200" alt="휴대전화 폭에서 본 D411 페이지"> |
+| D411 | <img src="images/mobile-d411.png" width="200" alt="휴대전화 폭에서 본 D411 페이지"> |
+| B333 | <img src="images/mobile-b333.png" width="200" alt="휴대전화 폭에서 본 B333 페이지"> |
+| 중앙도서관 | <img src="images/mobile-library.png" width="200" alt="휴대전화 폭에서 본 중앙도서관 페이지"> |
 
 ### 출처
 - 새로 사용한 이미지·웹폰트의 출처(사용한 경우):
