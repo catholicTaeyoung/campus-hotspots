@@ -1,5 +1,5 @@
 # 나만의 캠퍼스 핫스팟
-이름은 **홍길동**, 공개 주소는 `https://catholictaeyoung.github.io/campus-hotspots/` 입니다.
+이름은 **박태영**, 공개 주소는 `https://catholictaeyoung.github.io/campus-hotspots/` 입니다.
 
 ## 2주차 실습 과제 · 나만의 캠퍼스 핫스팟
 학교 안에서 다른 학생에게 소개하고 싶은 장소 3곳을 골라 만든 작은 홈페이지입니다.
@@ -11,12 +11,15 @@
 ### 🛠 Tech Stack
 - HTML
 
+
+
 ## 3주차: 네 페이지, 네 가지 분위기
 
 | 장소 | 분위기 | 사용한 class |
 | --- | --- | --- |
-| 중앙도서관 | 조용한 서재 | `page-library` |
-| 잔디마당 | 초록 산책 | `page-garden` |
+| D411 | 석양빛 언덕과 따스한 시야 (Warm Sunset & Soft Round) | `page-d411` |
+| B333 | 픽셀 아트 스타일의 레트로 (8-Bit Arcade & Retro) | `page-b333` |
+| 중앙도서관 | 시원하고 파도 소리가 들리는 듯한 청량함 (Ocean & Aqua Breeze) | `page-library` |
 
 ### 적용한 CSS
 
