@@ -24,7 +24,7 @@
 | 중앙도서관 | 시원하고 파도 소리가 들리는 듯한 청량함 (Ocean & Aqua Breeze) | `page-library`, `how_to_get_there`, `what_should_we_do` | `transform: translateY(-3px) scale(1.02);` |
 
 ### 모바일 스타일
-- 적용한 @media 조건: @media (max-width: 600px) and (prefers-color-scheme: dark)
+- 적용한 @media 조건: `@media (max-width: 600px) and (prefers-color-scheme: dark)`
 - 모바일에서 특별히 바뀌는 부분과 이유: 휴대전화에서 다크모드를 적용하면 어두운 화면에 어울리는 색으로 배경색과 폰트색이 바뀐다!
 - 휴대전화에서 네 페이지를 확인한 결과:
 
