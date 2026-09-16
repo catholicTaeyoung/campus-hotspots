@@ -13,24 +13,16 @@
 
 ## 3주차 실습 과제 · 네 페이지, 네 가지 분위기
 
-| 장소 | 분위기 | 사용한 class |
+- GitHub Pages URL: https://catholictaeyoung.github.io/campus-hotspots/
+
+### 페이지별 스타일
+| 페이지 | 의도한 분위기 | 적용한 class | 적용한 CSS |
 | --- | --- | --- |
-| D411 | 석양빛 언덕과 따스한 시야 (Warm Sunset & Soft Round) | `page-d411` |
-| B333 | 픽셀 아트 스타일의 레트로 (8-Bit Arcade & Retro) | `page-b333` |
-| 중앙도서관 | 시원하고 파도 소리가 들리는 듯한 청량함 (Ocean & Aqua Breeze) | `page-library` |
-
-### 적용한 CSS
-
-```css
-.page-library {
-  background-color: #f6f1e7;
-  font-family: "Noto Serif KR", serif;
-}
-```
-
-- [x] 네 페이지에 styles.css를 연결했다!
-- [x] 휴대전화에서 확인했다!
-- [x] 휴대전화에서 다크모드로도 확인했다!
+| 프론트페이지 | 통통 튀고 생동감 넘치는 트렌디 대도시 (Vibrant & Playful Urban) | `page-d411` | `background-color: #f0f3ff;`, `transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);`, `transform: translateY(-4px) scale(1.03);` |
+| D411 | 석양빛 언덕과 따스한 시야 (Warm Sunset & Soft Round) | `page-d411`, `how_to_get_there`, `what_should_we_do` | `transform: translateY(-3px);` |
+| B333 | 픽셀 아트 스타일의 레트로 (8-Bit Arcade & Retro) | `page-b333`, `how_to_get_there`, `what_should_we_do` | `background-image: radial-gradient(#515c72 15%, transparent 16%), radial-gradient(#374259 15%, transparent 16%);
+` |
+| 중앙도서관 | 시원하고 파도 소리가 들리는 듯한 청량함 (Ocean & Aqua Breeze) | `page-library`, `how_to_get_there`, `what_should_we_do` | `transform: translateY(-3px) scale(1.02);` |
 
 ### 모바일 스타일
 - 적용한 @media 조건: @media (max-width: 600px) and (prefers-color-scheme: dark)
