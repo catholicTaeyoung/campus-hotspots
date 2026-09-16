@@ -38,7 +38,8 @@
 
 | 구분 | 메인페이지 | D411 | B333 | 중앙도서관 |
 | --- | --- | --- | --- | --- |
-| 휴대전화 폭 이미지 | <img src="images/mobile-home.png" width="200" alt="휴대전화 폭에서 본 메인페이지"> | <img src="images/mobile-d411.png" width="200" alt="휴대전화 폭에서 본 D411 페이지"> | <img src="images/mobile-b333.png" width="200" alt="휴대전화 폭에서 본 B333 페이지"> | <img src="images/mobile-library.png" width="200" alt="휴대전화 폭에서 본 중앙도서관 페이지"> |
+| 라이트모드 | <img src="images/mobile-home-light.png" width="200" alt="메인페이지-라이트모드"> | <img src="images/mobile-d411-light.png" width="200" alt="D411-라이트모드"> | <img src="images/mobile-b333-light.png" width="200" alt="B333-라이트모드"> | <img src="images/mobile-library-light.png" width="200" alt="중앙도서관-라이트모드"> |
+| 다크모드 | <img src="images/mobile-home-dark.png" width="200" alt="메인페이지-다크모드"> | <img src="images/mobile-d411-dark.png" width="200" alt="D411-다크모드"> | <img src="images/mobile-b333-dark.png" width="200" alt="B333-다크모드"> | <img src="images/mobile-library-dark.png" width="200" alt="중앙도서관-다크모드"> |
 
 ### 출처
 - 새로 사용한 이미지·웹폰트의 출처(사용한 경우):
