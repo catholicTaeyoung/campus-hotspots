@@ -92,21 +92,27 @@
 
 <body>
     <p><a class="page-link" href="index.html">탐험 페이지로 이동</a></p>
-    <h1>대한민국 지역별 전기차 통계</h1>
-    <p>시·도별 전기차 등록대수와 급속 충전기 설치대수를 비교합니다.</p>
+    <h1>수도권과 지방의 전기차 충전기 보급률</h1>
+    <p>전기차 등록대수 대비 급속 충전기 대수를 지역별로 비교합니다.</p>
     <div class="tabs" role="group" aria-label="그래프 선택">
-        <button type="button" data-panel="vehicles" aria-controls="vehicles" aria-pressed="true">전기차 대수</button>
-        <button type="button" data-panel="chargers" aria-controls="chargers" aria-pressed="false">전기차 충전기 대수</button>
+        <button type="button" data-panel="metropolitan" aria-controls="metropolitan" aria-pressed="true">수도권</button>
+        <button type="button" data-panel="local" aria-controls="local" aria-pressed="false">지방</button>
     </div>
-    <section id="vehicles" class="panel" aria-labelledby="vehicles-title">
-        <h2 id="vehicles-title">지역별 전기차 등록대수 (대)</h2>
-        <div class="chart-box"><canvas id="vehicles-chart" role="img" aria-label="지역별 전기차 등록대수 그래프"></canvas></div>
-        <p>전기차 등록대수 CSV의 시군구 자료를 시·도별로 묶어 합산했습니다.</p>
+    <section id="metropolitan" class="panel" aria-labelledby="metropolitan-title">
+        <h2 id="metropolitan-title">수도권 지역별 급속 충전기 보급률 (%)</h2>
+        <div class="chart-box"><canvas id="metropolitan-chart" role="img" aria-label="서울 경기 인천의 전기차 충전기 보급률 그래프"></canvas></div>
+        <p>수도권은 서울·경기·인천을 지역별로 표시했습니다. 보급률은 급속 충전기 수를 전기차 등록대수로 나눈 값입니다.</p>
+        <p>※ 두 자료의 기준 시점이 달라 실제 현재 보급률과는 차이가 있을 수 있습니다.</p>
+        <p><a href="https://www.data.go.kr/data/15142951/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국교통안전공단 전국 전기차 차종별 용도별 차량 등록대수(운행차량기준)</a></p>
+        <p><a href="https://www.data.go.kr/data/15086175/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국에너지공단 전기차 급속충전기 지역별 설치 현황</a></p>
     </section>
-    <section id="chargers" class="panel" aria-labelledby="chargers-title" hidden>
-        <h2 id="chargers-title">지역별 전기차 급속 충전기 설치대수 (대)</h2>
-        <div class="chart-box"><canvas id="chargers-chart" role="img" aria-label="지역별 전기차 급속 충전기 설치대수 그래프"></canvas></div>
-        <p>충전기 CSV의 충전기 규격별 수량을 시·도별로 합산했습니다.</p>
+    <section id="local" class="panel" aria-labelledby="local-title" hidden>
+        <h2 id="local-title">지방 지역별 급속 충전기 보급률 (%)</h2>
+        <div class="chart-box"><canvas id="local-chart" role="img" aria-label="지방 각 지역의 전기차 충전기 보급률 그래프"></canvas></div>
+        <p>지방은 서울·경기·인천을 제외한 각 지역을 개별적으로 표시했습니다. 보급률은 급속 충전기 수를 전기차 등록대수로 나눈 값입니다.</p>
+        <p>※ 두 자료의 기준 시점이 달라 실제 현재 보급률과는 차이가 있을 수 있습니다.</p>
+        <p><a href="https://www.data.go.kr/data/15142951/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국교통안전공단 전국 전기차 차종별 용도별 차량 등록대수(운행차량기준)</a></p>
+        <p><a href="https://www.data.go.kr/data/15086175/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국에너지공단 전기차 급속충전기 지역별 설치 현황</a></p>
     </section>
     <p id="status" role="status"></p>
     <script>
@@ -166,7 +172,7 @@
                 });
         }
 
-        function drawChart(canvasId, entries, label, color) {
+        function drawChart(panelId, canvasId, entries, label, color) {
             const chart = new Chart(document.querySelector(canvasId), {
                 type: "bar",
                 data: {
@@ -177,10 +183,24 @@
                     indexAxis: "y",
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: { x: { beginAtZero: true } }
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { callback: function (value) { return value + "%"; } }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.dataset.label + ": " + context.parsed.x.toFixed(2) + "%";
+                                }
+                            }
+                        }
+                    }
                 }
             });
-            charts[canvasId] = chart;
+            charts[panelId] = chart;
         }
 
         if (typeof Papa === "undefined" || typeof Chart === "undefined") {
@@ -188,20 +208,37 @@
         } else {
             Promise.all([readCsv(vehicleFile), readCsv(chargerFile)])
                 .then(function (data) {
-                    const vehicles = sumByRegion(data[0], function (row) {
+                    const vehicleTotals = sumByRegion(data[0], function (row) {
                         return row["시군구별"]?.trim().split(/\s+/)[0];
                     }, function (row) {
                         return row["연료별"] === "전기" ? Number(row["계"]) || 0 : 0;
                     });
-                    const chargers = sumByRegion(data[1], function (row) {
+                    const chargerTotals = sumByRegion(data[1], function (row) {
                         return row["광역지자체"]?.trim();
                     }, function (row) {
                         return [" 50키로와트 ", " 100키로와트 ", " 100키로와트듀얼 ", " 200키로와트듀얼 ", " 300키로와트이상 "]
                             .reduce(function (total, key) { return total + (Number(row[key]) || 0); }, 0);
                     });
-                    drawChart("#vehicles-chart", vehicles, "전기차 등록대수(대)", "#7455e9");
-                    drawChart("#chargers-chart", chargers, "급속 충전기 설치대수(대)", "#008678");
-                    showPanel("vehicles");
+                    const vehicleMap = new Map(vehicleTotals);
+                    const chargerMap = new Map(chargerTotals);
+                    const metropolitanRegions = ["서울", "경기", "인천"];
+                    const localRegions = chargerTotals
+                        .map(function (entry) { return entry[0]; })
+                        .filter(function (region) { return !metropolitanRegions.includes(region); });
+
+                    function adoptionRates(regions) {
+                        return regions.map(function (region) {
+                            const vehicles = vehicleMap.get(region) || 0;
+                            const chargers = chargerMap.get(region) || 0;
+                            return [region, vehicles ? chargers / vehicles * 100 : 0];
+                        }).sort(function (a, b) {
+                            return b[1] - a[1];
+                        });
+                    }
+
+                    drawChart("metropolitan", "#metropolitan-chart", adoptionRates(metropolitanRegions), "급속 충전기 보급률", "#7455e9");
+                    drawChart("local", "#local-chart", adoptionRates(localRegions), "급속 충전기 보급률", "#008678");
+                    showPanel("metropolitan");
                 })
                 .catch(function (error) {
                     document.querySelector("#status").textContent = "CSV를 불러오지 못했습니다. 웹 서버로 파일을 실행했는지 확인하세요.";
