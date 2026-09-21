@@ -6,126 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>미콘 선배의 캠퍼스 핫스팟</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 20px;
-            color: #17223b;
-            background: #f7f8fc;
-            font: 17px/1.65 system-ui, sans-serif;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-        }
-
-        button,
-        input,
-        select {
-            font: inherit;
-        }
-
-        button,
-        .action {
-            padding: 8px 16px;
-            margin: 4px;
-            border: 1px solid #7455e9;
-            border-radius: 10px;
-            color: #30205c;
-            background: white;
-            cursor: pointer;
-        }
-
-        button:hover,
-        button[aria-pressed="true"] {
-            background: #ece6ff;
-        }
-
-        button:focus-visible,
-        a:focus-visible {
-            outline: 3px solid #c56200;
-        }
-
-        button:disabled {
-            opacity: .5;
-            cursor: default;
-        }
-
-        label {
-            display: block;
-            margin: 10px 0;
-        }
-
-        img {
-            width: 100%;
-            max-height: 260px;
-            object-fit: contain;
-        }
-
-        .layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .stage {
-            display: grid;
-            place-items: center;
-            min-height: 220px;
-        }
-
-        #planet {
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            font-size: 40px;
-        }
-
-        #result {
-            white-space: pre-line;
-        }
-
-        canvas {
-            max-width: 100%;
-        }
-
-        #game {
-            background: #ece6ff;
-            touch-action: manipulation;
-        }
-
-        .chart {
-            position: relative;
-            height: 280px;
-        }
-
-        iframe {
-            max-width: 100%;
-            border: 0;
-        }
-
-        [hidden] {
-            display: none !important;
-        }
-
-        @media (max-width: 600px) {
-            .layout {
-                grid-template-columns: 1fr;
-            }
-
-            body {
-                padding: 12px;
-            }
-        }
-    </style>
-
 </head>
 
 <body>
+    <p><a class="action" href="statistics.html">통계 페이지로 이동</a></p>
     <h1>미콘 선배의 캠퍼스 핫스팟</h1>
     <nav aria-label="탐험할 장소 선택">
         <button type="button" data-place="d411">D411</button>
@@ -242,26 +126,7 @@
         </div>
     </div>
 
-    <script>
-        const panels = document.querySelectorAll(".place-panel");
-        const buttons = document.querySelectorAll("[data-place]");
-
-        function showPlace(id) {
-            for (const panel of panels) {
-                if (panel.id === id) {
-                    panel.style.display = "block";
-                } else {
-                    panel.style.display = "none";
-                }
-            }
-        }
-
-        for (const button of buttons) {
-            button.addEventListener("click", function () {
-                showPlace(button.dataset.place);
-            });
-        }
-    </script>
+    <script src="app.js"></script>
 
 </body>
 

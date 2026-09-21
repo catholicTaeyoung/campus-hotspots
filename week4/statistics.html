@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>대한민국 전기차 통계</title>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.5.2/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            color: #17223b;
+            background: #f7f8fc;
+            font: 16px/1.7 system-ui, sans-serif;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: 1px solid #7455e9;
+            border-radius: 10px;
+            background: white;
+            color: #30205c;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        button[aria-pressed="true"] {
+            background: #6544d7;
+            color: white;
+        }
+
+        button:focus-visible {
+            outline: 3px solid #c56200;
+            outline-offset: 3px;
+        }
+
+        .page-link {
+            display: inline-block;
+            padding: 10px 16px;
+            border: 1px solid #7455e9;
+            border-radius: 10px;
+            color: #30205c;
+            text-decoration: none;
+        }
+
+        .page-link:focus-visible {
+            outline: 3px solid #c56200;
+            outline-offset: 3px;
+        }
+
+        .chart-box {
+            position: relative;
+            height: 520px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .tabs button {
+                flex: 1;
+            }
+
+            .chart-box {
+                height: 520px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <p><a class="page-link" href="index.html">탐험 페이지로 이동</a></p>
+    <h1>대한민국 지역별 전기차 통계</h1>
+    <p>시·도별 전기차 등록대수와 급속 충전기 설치대수를 비교합니다.</p>
+    <div class="tabs" role="group" aria-label="그래프 선택">
+        <button type="button" data-panel="vehicles" aria-controls="vehicles" aria-pressed="true">전기차 대수</button>
+        <button type="button" data-panel="chargers" aria-controls="chargers" aria-pressed="false">전기차 충전기 대수</button>
+    </div>
+    <section id="vehicles" class="panel" aria-labelledby="vehicles-title">
+        <h2 id="vehicles-title">지역별 전기차 등록대수 (대)</h2>
+        <div class="chart-box"><canvas id="vehicles-chart" role="img" aria-label="지역별 전기차 등록대수 그래프"></canvas></div>
+        <p>전기차 등록대수 CSV의 시군구 자료를 시·도별로 묶어 합산했습니다.</p>
+    </section>
+    <section id="chargers" class="panel" aria-labelledby="chargers-title" hidden>
+        <h2 id="chargers-title">지역별 전기차 급속 충전기 설치대수 (대)</h2>
+        <div class="chart-box"><canvas id="chargers-chart" role="img" aria-label="지역별 전기차 급속 충전기 설치대수 그래프"></canvas></div>
+        <p>충전기 CSV의 충전기 규격별 수량을 시·도별로 합산했습니다.</p>
+    </section>
+    <p id="status" role="status"></p>
+    <script>
+        const charts = {};
+        const buttons = document.querySelectorAll("[data-panel]");
+        const panels = document.querySelectorAll(".panel");
+        const vehicleFile = "data/한국교통안전공단_전국_전기차_차종별_용도별_차량_등록대수(운행차량기준)_20250407.csv";
+        const chargerFile = "data/한국에너지공단_전기차 급속충전기 지역별 설치 현황_20211231.csv";
+
+        function showPanel(id) {
+            for (const panel of panels) {
+                panel.hidden = panel.id !== id;
+            }
+            for (const button of buttons) {
+                button.setAttribute("aria-pressed", String(button.dataset.panel === id));
+            }
+            // 숨겨져 있던 canvas가 표시된 다음 새 너비에 맞춥니다.
+            requestAnimationFrame(function () {
+                if (charts[id]) charts[id].resize();
+            });
+        }
+
+        for (const button of buttons) {
+            button.addEventListener("click", function () {
+                showPanel(button.dataset.panel);
+            });
+        }
+
+        function sumByRegion(rows, regionFunction, valueFunction) {
+            const totals = new Map();
+            for (const row of rows) {
+            const region = regionFunction(row);
+                if (!region) continue;
+                totals.set(region, (totals.get(region) || 0) + valueFunction(row));
+            }
+            return [...totals.entries()].sort(function (a, b) {
+                return b[1] - a[1];
+            });
+        }
+
+        function readCsv(file) {
+            return fetch(file)
+                .then(function (response) {
+                    if (!response.ok) throw new Error(file + "을(를) 불러오지 못했습니다.");
+                    return response.arrayBuffer();
+                })
+                .then(function (buffer) {
+                    const text = new TextDecoder("euc-kr").decode(buffer);
+                    return new Promise(function (resolve, reject) {
+                        Papa.parse(text, {
+                            header: true,
+                            skipEmptyLines: true,
+                            complete: function (results) { resolve(results.data); },
+                            error: reject
+                        });
+                    });
+                });
+        }
+
+        function drawChart(canvasId, entries, label, color) {
+            const chart = new Chart(document.querySelector(canvasId), {
+                type: "bar",
+                data: {
+                    labels: entries.map(function (entry) { return entry[0]; }),
+                    datasets: [{ label: label, data: entries.map(function (entry) { return entry[1]; }), backgroundColor: color }]
+                },
+                options: {
+                    indexAxis: "y",
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { x: { beginAtZero: true } }
+                }
+            });
+            charts[canvasId] = chart;
+        }
+
+        if (typeof Papa === "undefined" || typeof Chart === "undefined") {
+            document.querySelector("#status").textContent = "라이브러리를 불러오지 못했습니다. 네트워크를 확인하세요.";
+        } else {
+            Promise.all([readCsv(vehicleFile), readCsv(chargerFile)])
+                .then(function (data) {
+                    const vehicles = sumByRegion(data[0], function (row) {
+                        return row["시군구별"]?.trim().split(/\s+/)[0];
+                    }, function (row) {
+                        return row["연료별"] === "전기" ? Number(row["계"]) || 0 : 0;
+                    });
+                    const chargers = sumByRegion(data[1], function (row) {
+                        return row["광역지자체"]?.trim();
+                    }, function (row) {
+                        return [" 50키로와트 ", " 100키로와트 ", " 100키로와트듀얼 ", " 200키로와트듀얼 ", " 300키로와트이상 "]
+                            .reduce(function (total, key) { return total + (Number(row[key]) || 0); }, 0);
+                    });
+                    drawChart("#vehicles-chart", vehicles, "전기차 등록대수(대)", "#7455e9");
+                    drawChart("#chargers-chart", chargers, "급속 충전기 설치대수(대)", "#008678");
+                    showPanel("vehicles");
+                })
+                .catch(function (error) {
+                    document.querySelector("#status").textContent = "CSV를 불러오지 못했습니다. 웹 서버로 파일을 실행했는지 확인하세요.";
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+
+</html>
