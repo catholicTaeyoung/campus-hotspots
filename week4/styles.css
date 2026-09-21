@@ -1,0 +1,488 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Noto+Serif+KR:wght@300;500;700&family=Press+Start+2P&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff');
+@import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/DungGeunMo.woff');
+
+
+
+/* ==========================================
+   1. 공통 기본 스타일 (Base Reset)
+   ========================================== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    line-height: 1.7;
+    background-color: #0b0f19;
+    color: #333;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.page {
+    width: 92%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.panel {
+    margin: 1.5rem 0;
+    padding: 1.8rem;
+    transition: all 0.3s ease;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.action {
+    display: inline-block;
+    padding: 0.8em 1.4em;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+a:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 4px;
+}
+
+
+/* ==========================================
+   2. 프론트페이지 (Home) 
+   - 컨셉: 통통 튀고 생동감 넘치는 트렌디 대도시 (Vibrant & Playful Urban)
+   ========================================== */
+    .page-home {
+        background-color: #f0f3ff; /* 약간의 푸른빛이 도는 밝고 경쾌한 배경색 */
+        color: #1e1b4b;
+        font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+        padding: 2rem 1rem;
+    }
+
+    /* 메인 타이틀 - 통통 튀는 포인트와 둥근 텍스트 라인 */
+    .page-home h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: #4f46e5; /* 세련되고 발랄한 인디고 블루 */
+        border-bottom: 4px solid #818cf8;
+        border-radius: 4px; /* 바 끝부분도 약간 둥글게 */
+        padding-bottom: 0.6rem;
+        margin-bottom: 2rem;
+        display: inline-block; /* 라인이 글자 길이에 맞게 돋보이도록 설정 */
+    }
+
+    /* 기본 패널 - 둥글고 부드러운 박스 */
+    .page-home .panel {
+        background-color: #ffffff;
+        border: 2px solid #e0e7ff;
+        border-left: 8px solid #6366f1; /* 포인트 컬러 바 */
+        border-radius: 20px; /* 라운딩을 대폭 증가 */
+        box-shadow: 0 12px 30px -5px rgba(99, 102, 241, 0.12);
+        padding: 1.5rem;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* 액션 버튼 - 통통 튀는 인터랙션 버튼 */
+    .page-home .action,
+    .page-home a.action {
+        display: inline-block;
+        background-color: #4f46e5;
+        color: #ffffff;
+        font-weight: 700;
+        padding: 0.8rem 1.6rem;
+        border: none;
+        border-radius: 50px; /* 완전 둥근 필(Pill) 형태로 변경 */
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+        letter-spacing: -0.01em;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); /* 통통 튀는 애니메이션 효과 */
+        text-decoration: none;
+    }
+
+    .page-home a.action:hover,
+    .page-home .action:hover {
+        background-color: #4338ca;
+        color: #ffffff;
+        transform: translateY(-4px) scale(1.03); /* 약간 커지면서 튀어오름 */
+        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.45);
+        }
+
+    /* 3개 핫스폿 섹션 (hotspot-item) - 둥글둥글한 박스 구분 */
+
+    /* 핫스폿 들을 감싸는 컨테이너 (필요시 사용) */
+    .page-home .hotspot-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    /* 둥글둥글한 핫스폿 카드 아이템 */
+        .page-home .hotspot-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 가로 방향 중앙 정렬 */
+            text-align: center; /* 텍스트 중앙 정렬 */
+            background-color: #ffffff;
+            border: 2px solid #eef2ff;
+            border-radius: 24px; /* 더 몰랑해보이는 둥근 모서리 */
+            padding: 3rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+    /* 호버 시 위로 살짝 튀어 오르는 효과 */
+    .page-home .hotspot-item:hover {
+        transform: translateY(-8px);
+        border-color: #c7d2fe;
+        box-shadow: 0 18px 35px rgba(99, 102, 241, 0.18);
+    }
+
+        /* 핫스폿 링크 텍스트 (크고 굵은 글씨) */
+        .page-home .hotspot-link {
+            display: inline-block;
+            color: #1e1b4b;
+            font-size: 1.2rem; /* 더 크게 */
+            font-weight: 800; /* 더 굵게 */
+            line-height: 1.5;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 6px;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        /* 카드 또는 링크에 마우스 올렸을 때(Hover) 강조 애니메이션 */
+        .page-home .hotspot-item:hover .hotspot-link {
+            color: #4f46e5; /* 글자색이 트렌디한 퍼플/블루로 변경 */
+            transform: scale(1.05); /* 텍스트가 5% 크기로 확대 */
+        }
+
+    /* 핫스폿 내의 제목 */
+    .page-home .hotspot-item h2,
+    .page-home .hotspot-item h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #312e81;
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+    }
+
+/* ==========================================
+   3. 장소 1: d411
+   - 컨셉: 석양빛 언덕과 따스한 시야 (Warm Sunset & Soft Round)
+   ========================================== */
+.page-d411 {
+    /* 노을빛 피치 핑크, 따뜻한 앰버 오렌지, 은은한 포근함의 그라데이션 */
+    background-color: #ffedd5;
+    color: #431407;
+    /* 둥글둥글한 손글씨/둥근고딕 폰트 적용 */
+    font-family: 'DungGeunMo', sans-serif;
+    font-size: 1.1rem; /* 폰트 특성에 맞춰 기본 크기를 약간 키웠습니다 */
+    min-height: 100vh;
+}
+
+    /* 헤딩 Title */
+    .page-d411 h1 {
+        font-size: 2.8rem;
+        font-weight: 700; /* 동글동글함을 강조하기 위한 볼드 처리 */
+        letter-spacing: 0.02em;
+        color: #7c2d12;
+        text-shadow: 0 2px 12px rgba(253, 186, 116, 0.4);
+    }
+
+    /* 카드 패널 */
+    .page-d411 .panel {
+        background: rgba(255, 250, 245, 0.55);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 237, 213, 0.8);
+        border-radius: 20px; /* 패널 모서리도 더 둥글게 조절 */
+        box-shadow: 0 8px 32px 0 rgba(194, 65, 12, 0.07);
+    }
+
+    /* 버튼/액션 엘리먼트 */
+    .page-d411 .action {
+        background: rgba(255, 247, 237, 0.7);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(254, 215, 170, 0.8);
+        color: #9a3412;
+        border-radius: 30px;
+        box-shadow: 0 4px 15px rgba(234, 88, 12, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    /* 마우스 호버 */
+    .page-d411 a:hover {
+        background: rgba(255, 255, 255, 0.95);
+        color: #7c2d12;
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.25);
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+
+    .page-d411 .panel:hover {
+        transform: translateY(-3px); /* 들림 효과 */
+        box-shadow: 0 14px 30px -5px rgba(22, 101, 52, 0.12);
+    }
+
+
+    /*----------------*/
+    /* 섹션 1: 찾아가는 방법 (세이지 그린 산책길 톤) */
+    .page-d411 .how_to_get_there {
+        background: rgba(240, 253, 244, 0.65); /* 차분한 세이지 그린 바탕 */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 2px solid rgba(187, 247, 208, 0.7);
+        border-radius: 24px; /* 둥근 박스 라인 */
+        padding: 28px 24px;
+        margin-bottom: 28px;
+        box-shadow: 0 10px 25px -5px rgba(22, 101, 52, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .page-d411 .how_to_get_there:hover {
+            transform: translateY(-3px); /* 들림 효과 */
+            box-shadow: 0 14px 30px -5px rgba(22, 101, 52, 0.12);
+        }
+
+        .page-d411 .how_to_get_there h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #14532d;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .page-d411 .how_to_get_there h2::before {
+                font-size: 1.4rem;
+            }
+
+    /* 섹션 2: 여기에서 해볼 것 (피치 로즈 석양 톤) */
+    .page-d411 .what_should_we_do {
+        background: rgba(255, 237, 213, 0.65); /* 따스한 피치 앰버 바탕 */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 2px solid rgba(254, 215, 170, 0.8);
+        border-radius: 24px; /* 둥근 박스 라인 */
+        padding: 28px 24px;
+        margin-bottom: 28px;
+        box-shadow: 0 10px 25px -5px rgba(194, 65, 12, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .page-d411 .what_should_we_do:hover {
+            transform: translateY(-3px); /* 들림 효과 */
+            box-shadow: 0 14px 30px -5px rgba(194, 65, 12, 0.15);
+        }
+
+        .page-d411 .what_should_we_do h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #7c2d12;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .page-d411 .what_should_we_do h2::before {
+                font-size: 1.4rem;
+            }
+
+
+
+/* ==========================================
+   4. 장소 2: b333
+   - 컨셉: 픽셀 아트 스타일의 레트로 (8-Bit Arcade & Retro)
+   ========================================== */
+.page-b333 {
+    background-color: #2f3e65;
+    background-image: radial-gradient(#515c72 15%, transparent 16%), radial-gradient(#374259 15%, transparent 16%);
+    background-size: 16px 16px;
+    background-position: 0 0, 8px 8px;
+    color: #00ff66;
+    font-family: 'Press Start 2P', 'DungGeunMo', 'Galmuri11', monospace, sans-serif;
+    font-size: 0.85rem;
+    line-height: 2;
+}
+
+    .page-b333 h1 {
+        font-size: 1.8rem;
+        color: #ff007f;
+        text-shadow: 3px 3px 0px #00ffff;
+        letter-spacing: -1px;
+    }
+
+    .page-b333 .panel {
+        background-color: #0d0e12;
+        border: 4px solid #00ff66;
+        border-radius: 0px;
+        box-shadow: 6px 6px 0px #ff007f;
+    }
+
+    .page-b333 .action {
+        background-color: #ff007f;
+        color: #ffffff;
+        border: 3px solid #ffffff;
+        border-radius: 0px;
+        box-shadow: 4px 4px 0px #00ffff;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    .page-b333 a:hover {
+        background-color: #00ffff;
+        color: #000000;
+        box-shadow: 2px 2px 0px #ff007f;
+        transform: translate(2px, 2px);
+        text-decoration: none;
+    }
+
+
+/* ==========================================
+   5. 장소 3: 중앙도서관 (Library)
+   - 컨셉: 시원하고 파도 소리가 들리는 듯한 청량함 (Ocean & Aqua Breeze)
+   ========================================== */
+.page-library {
+    background-color: #0369a1;
+    color: #e0f2fe;
+    font-family: 'Noto Sans KR', system-ui, sans-serif;
+    min-height: 100vh;
+}
+
+    .page-library h1 {
+        color: #7dd3fc;
+        font-size: 2.6rem;
+        font-weight: 700;
+        text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+    }
+
+    .page-library .panel {
+        background: rgba(8, 47, 73, 0.6);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-left: 5px solid #38bdf8;
+        border-radius: 0px 20px 0px 20px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 30px rgba(2, 132, 199, 0.2);
+    }
+
+    .page-library .action {
+        background: linear-gradient(90deg, #0ea5e9, #06b6d4);
+        color: #ffffff;
+        border: none;
+        border-radius: 25px;
+        box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+    }
+
+    .page-library a:hover {
+        background: linear-gradient(90deg, #38bdf8, #22d3ee);
+        box-shadow: 0 0 25px rgba(34, 211, 238, 0.8);
+        transform: translateY(-3px) scale(1.02);
+        text-decoration: none;
+    }
+
+
+/* ==========================================
+   6. 반응형 디자인 (Mobile Optimization)
+   ========================================== */
+@media (max-width: 600px) {
+    .page {
+        width: 94%;
+        padding: 1rem 0;
+    }
+
+    .panel {
+        padding: 1.2rem;
+        margin: 1rem 0;
+    }
+
+    .page h1 {
+        font-size: 1.8rem;
+    }
+
+    .action {
+        display: block;
+        text-align: center;
+        padding: 0.9em;
+    }
+}
+
+
+/***********************/
+/* 모바일 기기가 '다크 모드'일 때 작동하는 미디어 쿼리 */
+@media (max-width: 600px) and (prefers-color-scheme: dark) {
+    .page-home {
+        width: 94%;
+        padding: 1rem 0;
+        background-color: #0A1128; /**/
+        color: #ffffff;
+    }
+
+        /* 둥글둥글한 핫스폿 카드 아이템 */
+        .page-home .hotspot-item {
+
+            background-color: #000121;
+
+        }
+        .page-home .hotspot-link{
+            color: #ffffff;
+        }
+
+    .page-d411 {
+        background-color: #311119;
+        color: #ffffff;
+    }
+        .page-d411 h1 {
+            color: #e6c972;
+        }
+
+    .page-b333 {
+        background-color: #0d0e12;
+        background-image: radial-gradient(#2d323f 15%, transparent 16%), radial-gradient(#2d323f 15%, transparent 16%);
+    }
+
+    .page-library {
+        background-color: #00153f;
+        color: #bae6fd;
+    }
+
+    .page-b333, .page-d411, .page-library, .panel, .action {
+        transition: background-color 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .panel {
+        padding: 1.2rem;
+        margin: 1rem 0;
+        background-color: #1e1e1e; /**/
+        border: 1px solid #333; /**/
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /**/
+    }
+
+    .page h1 {
+        font-size: 1.8rem;
+    }
+
+    .action {
+        display: block;
+        text-align: center;
+        padding: 0.9em;
+        background-color: #bb86fc; /**/
+        color: #000; /**/
+    }
+}
