@@ -99,17 +99,17 @@
         <button type="button" data-panel="local" aria-controls="local" aria-pressed="false">지방</button>
     </div>
     <section id="metropolitan" class="panel" aria-labelledby="metropolitan-title">
-        <h2 id="metropolitan-title">수도권 지역별 급속 충전기 보급률 (%)</h2>
-        <div class="chart-box"><canvas id="metropolitan-chart" role="img" aria-label="서울 경기 인천의 전기차 충전기 보급률 그래프"></canvas></div>
-        <p>수도권은 서울·경기·인천을 지역별로 표시했습니다. 보급률은 급속 충전기 수를 전기차 등록대수로 나눈 값입니다.</p>
+        <h2 id="metropolitan-title">수도권 지역별 전기차·충전기·보급률</h2>
+        <div class="chart-box"><canvas id="metropolitan-chart" role="img" aria-label="서울 경기 인천의 전기차 대수, 충전기 대수, 보급률 혼합 그래프"></canvas></div>
+        <p>수도권은 서울·경기·인천을 지역별로 표시했습니다. 막대는 전기차와 급속 충전기 대수, 선은 충전기 보급률입니다.</p>
         <p>※ 두 자료의 기준 시점이 달라 실제 현재 보급률과는 차이가 있을 수 있습니다.</p>
         <p><a href="https://www.data.go.kr/data/15142951/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국교통안전공단 전국 전기차 차종별 용도별 차량 등록대수(운행차량기준)</a></p>
         <p><a href="https://www.data.go.kr/data/15086175/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국에너지공단 전기차 급속충전기 지역별 설치 현황</a></p>
     </section>
     <section id="local" class="panel" aria-labelledby="local-title" hidden>
-        <h2 id="local-title">지방 지역별 급속 충전기 보급률 (%)</h2>
-        <div class="chart-box"><canvas id="local-chart" role="img" aria-label="지방 각 지역의 전기차 충전기 보급률 그래프"></canvas></div>
-        <p>지방은 서울·경기·인천을 제외한 각 지역을 개별적으로 표시했습니다. 보급률은 급속 충전기 수를 전기차 등록대수로 나눈 값입니다.</p>
+        <h2 id="local-title">지방 지역별 전기차·충전기·보급률</h2>
+        <div class="chart-box"><canvas id="local-chart" role="img" aria-label="지방 각 지역의 전기차 대수, 충전기 대수, 보급률 혼합 그래프"></canvas></div>
+        <p>지방은 서울·경기·인천을 제외한 각 지역을 개별적으로 표시했습니다. 막대는 전기차와 급속 충전기 대수, 선은 충전기 보급률입니다.</p>
         <p>※ 두 자료의 기준 시점이 달라 실제 현재 보급률과는 차이가 있을 수 있습니다.</p>
         <p><a href="https://www.data.go.kr/data/15142951/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국교통안전공단 전국 전기차 차종별 용도별 차량 등록대수(운행차량기준)</a></p>
         <p><a href="https://www.data.go.kr/data/15086175/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국에너지공단 전기차 급속충전기 지역별 설치 현황</a></p>
@@ -172,20 +172,53 @@
                 });
         }
 
-        function drawChart(panelId, canvasId, entries, label, color) {
+        function drawChart(panelId, canvasId, entries) {
             const chart = new Chart(document.querySelector(canvasId), {
                 type: "bar",
                 data: {
-                    labels: entries.map(function (entry) { return entry[0]; }),
-                    datasets: [{ label: label, data: entries.map(function (entry) { return entry[1]; }), backgroundColor: color }]
+                    labels: entries.labels,
+                    datasets: [
+                        {
+                            type: "bar",
+                            label: "전기차 대수",
+                            data: entries.vehicles,
+                            backgroundColor: "#7455e9",
+                            yAxisID: "count"
+                        },
+                        {
+                            type: "bar",
+                            label: "전기차 충전기 대수",
+                            data: entries.chargers,
+                            backgroundColor: "#008678",
+                            yAxisID: "count"
+                        },
+                        {
+                            type: "line",
+                            label: "충전기 보급률",
+                            data: entries.rates,
+                            borderColor: "#c56200",
+                            backgroundColor: "#c56200",
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            tension: 0.2,
+                            yAxisID: "rate"
+                        }
+                    ]
                 },
                 options: {
-                    indexAxis: "y",
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        x: {
+                        count: {
                             beginAtZero: true,
+                            position: "left",
+                            title: { display: true, text: "대수" }
+                        },
+                        rate: {
+                            beginAtZero: true,
+                            position: "right",
+                            title: { display: true, text: "보급률 (%)" },
+                            grid: { drawOnChartArea: false },
                             ticks: { callback: function (value) { return value + "%"; } }
                         }
                     },
@@ -193,7 +226,10 @@
                         tooltip: {
                             callbacks: {
                                 label: function (context) {
-                                    return context.dataset.label + ": " + context.parsed.x.toFixed(2) + "%";
+                                    const value = context.dataset.yAxisID === "rate"
+                                        ? context.parsed.y.toFixed(2) + "%"
+                                        : context.parsed.y.toLocaleString("ko-KR") + "대";
+                                    return context.dataset.label + ": " + value;
                                 }
                             }
                         }
@@ -226,18 +262,33 @@
                         .map(function (entry) { return entry[0]; })
                         .filter(function (region) { return !metropolitanRegions.includes(region); });
 
-                    function adoptionRates(regions) {
+                    function chartEntries(regions) {
                         return regions.map(function (region) {
                             const vehicles = vehicleMap.get(region) || 0;
                             const chargers = chargerMap.get(region) || 0;
-                            return [region, vehicles ? chargers / vehicles * 100 : 0];
+                            return {
+                                region: region,
+                                vehicles: vehicles,
+                                chargers: chargers,
+                                rate: vehicles ? chargers / vehicles * 100 : 0
+                            };
                         }).sort(function (a, b) {
-                            return b[1] - a[1];
+                            return b.rate - a.rate;
                         });
                     }
 
-                    drawChart("metropolitan", "#metropolitan-chart", adoptionRates(metropolitanRegions), "급속 충전기 보급률", "#7455e9");
-                    drawChart("local", "#local-chart", adoptionRates(localRegions), "급속 충전기 보급률", "#008678");
+                    function chartData(regions) {
+                        const entries = chartEntries(regions);
+                        return {
+                            labels: entries.map(function (entry) { return entry.region; }),
+                            vehicles: entries.map(function (entry) { return entry.vehicles; }),
+                            chargers: entries.map(function (entry) { return entry.chargers; }),
+                            rates: entries.map(function (entry) { return entry.rate; })
+                        };
+                    }
+
+                    drawChart("metropolitan", "#metropolitan-chart", chartData(metropolitanRegions));
+                    drawChart("local", "#local-chart", chartData(localRegions));
                     showPanel("metropolitan");
                 })
                 .catch(function (error) {
