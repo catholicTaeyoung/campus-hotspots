@@ -37,6 +37,18 @@ button,
     cursor: pointer;
 }
 
+.page-navigation {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.page-navigation .action {
+    margin: 0;
+    white-space: nowrap;
+}
+
 button:hover,
 button[aria-pressed="true"] {
     background: #ece6ff;
@@ -67,6 +79,10 @@ img {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+}
+
+.page-explore .layout {
+    grid-template-columns: 1fr;
 }
 
 .stage {
@@ -116,5 +132,10 @@ iframe {
 
     body {
         padding: 12px;
+    }
+
+    .page-navigation {
+        flex-wrap: wrap;
+        align-items: flex-start;
     }
 }
