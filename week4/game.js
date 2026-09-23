@@ -30,6 +30,8 @@ let countdownInterval;
 let countdownTimeout;
 let moveLeft = false;
 let moveRight = false;
+let touchStartX = null;
+let touchStartPaddleX = null;
 
 function createBricks() {
 	return Array.from({ length: BRICK_ROWS }, (_, row) =>
@@ -186,6 +188,25 @@ function gameLoop(timestamp) {
 	animationFrame = requestAnimationFrame(gameLoop);
 }
 
+function handleTouchStart(event) {
+	if (gameState !== "playing") return;
+	touchStartX = event.touches[0].clientX;
+	touchStartPaddleX = paddle.x;
+}
+
+function handleTouchMove(event) {
+	if (gameState !== "playing" || touchStartX === null) return;
+	event.preventDefault();
+	const bounds = canvas.getBoundingClientRect();
+	const movement = (event.touches[0].clientX - touchStartX) * (canvas.width / bounds.width);
+	paddle.x = Math.max(0, Math.min(canvas.width - paddle.width, touchStartPaddleX + movement));
+}
+
+function handleTouchEnd() {
+	touchStartX = null;
+	touchStartPaddleX = null;
+}
+
 window.addEventListener("keydown", (event) => {
 	if (event.code === "Space" && !event.repeat && ["ready", "clear", "over"].includes(gameState)) {
 		event.preventDefault();
@@ -203,6 +224,9 @@ window.addEventListener("keyup", (event) => {
 	if (event.key === "ArrowLeft") moveLeft = false;
 	if (event.key === "ArrowRight") moveRight = false;
 });
+canvas.addEventListener("touchstart", handleTouchStart, { passive: true });
+canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+canvas.addEventListener("touchend", handleTouchEnd, { passive: true });
 restartButton.addEventListener("click", startGame);
 
 prepareGame();

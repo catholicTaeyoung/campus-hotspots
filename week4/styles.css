@@ -85,6 +85,10 @@ img {
     grid-template-columns: 1fr;
 }
 
+.page-explore .panel > img {
+    object-position: left center;
+}
+
 .stage {
     display: grid;
     place-items: center;
