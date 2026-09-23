@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>벽돌깨기</title>
+	<style>
+		:root {
+			color-scheme: dark;
+			font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+			background: #10182b;
+			color: #f4f7ff;
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			display: grid;
+			min-height: 100vh;
+			margin: 0;
+			place-items: center;
+			padding: 24px;
+			background: radial-gradient(circle at 50% 0%, #243b68 0%, #10182b 55%, #080d19 100%);
+		}
+
+		.game-shell {
+			width: min(92vw, 760px);
+			text-align: center;
+		}
+
+		h1 {
+			margin: 0 0 16px;
+			font-size: clamp(1.7rem, 4vw, 2.6rem);
+			letter-spacing: 0.04em;
+		}
+
+		.hud {
+			display: flex;
+			justify-content: space-between;
+			gap: 16px;
+			margin-bottom: 12px;
+			font-size: clamp(1rem, 2.5vw, 1.2rem);
+			font-weight: 700;
+		}
+
+		.hud span { color: #76e6ff; }
+
+		.canvas-wrap {
+			position: relative;
+			overflow: hidden;
+			border: 2px solid #4b6c9f;
+			border-radius: 12px;
+			box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+		}
+
+		canvas {
+			display: block;
+			width: 100%;
+			height: auto;
+			background: #0b1325;
+			cursor: none;
+			touch-action: none;
+		}
+
+		.message {
+			position: absolute;
+			inset: 0;
+			display: grid;
+			place-items: center;
+			padding: 20px;
+			background: rgba(8, 13, 25, 0.82);
+			font-size: clamp(1.4rem, 4vw, 2.3rem);
+			font-weight: 800;
+			line-height: 1.5;
+		}
+
+		.message[hidden] { display: none; }
+
+		.restart {
+			margin-top: 16px;
+			padding: 10px 22px;
+			border: 0;
+			border-radius: 6px;
+			background: #76e6ff;
+			color: #07111e;
+			font: inherit;
+			font-weight: 800;
+			cursor: pointer;
+		}
+
+		.restart:hover { background: #a9f0ff; }
+		.restart[hidden] {
+			display: inline-block;
+			visibility: hidden;
+		}
+
+		.hint { margin: 12px 0 0; color: #aebbd3; font-size: 0.9rem; }
+	</style>
+</head>
+<body>
+	<main class="game-shell">
+		<h1>벽돌깨기</h1>
+		<div class="hud" aria-live="polite">
+			<div>점수: <span id="score">0</span></div>
+			<div>남은 시간: <span id="timer">03:00</span></div>
+		</div>
+		<div class="canvas-wrap">
+			<canvas id="gameCanvas" width="720" height="520" aria-label="벽돌깨기 게임"></canvas>
+			<div id="message" class="message">시작 버튼을 눌러주세요</div>
+		</div>
+		<button id="restartButton" class="restart" type="button">게임 시작</button>
+		<p class="hint">← → 방향키로 패들을 움직이세요.</p>
+	</main>
+	<script src="game.js"></script>
+</body>
+</html>
