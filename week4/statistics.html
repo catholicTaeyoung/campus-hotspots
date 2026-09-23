@@ -96,26 +96,52 @@
         <a class="page-link" href="game.html">게임 페이지로 이동</a>
     </nav>
     <h1>지역별 전기차와 충전기 보급률</h1>
-    <p>전국 각 지역의 전기차 또는 급속 충전기 대수와 충전기 보급률을 비교합니다.</p>
+    <p>전국 각 지역의 전기차와 충전기 종류별 대수 및 보급률을 비교합니다.</p>
     <div class="tabs" role="group" aria-label="그래프 선택">
         <button type="button" data-panel="vehicles" aria-controls="vehicles" aria-pressed="true">전기차</button>
-        <button type="button" data-panel="chargers" aria-controls="chargers" aria-pressed="false">전기차 충전기</button>
+        <button type="button" data-panel="slow" aria-controls="slow" aria-pressed="false">완속충전기(50kW미만)</button>
+        <button type="button" data-panel="fast" aria-controls="fast" aria-pressed="false">고속충전기(50kW이상)</button>
+        <button type="button" data-panel="all" aria-controls="all" aria-pressed="false">모든 충전기</button>
     </div>
     <section id="vehicles" class="panel" aria-labelledby="vehicles-title">
         <h2 id="vehicles-title">지역별 전기차 대수와 충전기 보급률</h2>
         <div class="chart-box"><canvas id="vehicles-chart" role="img" aria-label="전국 각 지역의 전기차 대수와 충전기 보급률 혼합 그래프"></canvas></div>
-        <p>막대는 지역별 전기차 등록대수, 선은 전기차 등록대수 대비 급속 충전기 보급률입니다.</p>
+        <p>막대는 지역별 전기차 등록대수입니다.</p>
         <p>※ 두 자료의 기준 시점이 달라 실제 현재 보급률과는 차이가 있을 수 있습니다.</p>
+        <p>해석1 (완속/급속): 총 충전기 숫자는 늘어 보급률 지표가 개선되는 것처럼 보이지만, 내막을 보면 수시간이 걸리는 완속 충전기가 대부분입니다. 이동 중 '즉시 충전'이 필요한 순간에 사용할 수 있는 급속 충전기 보급은 턱없이 부족하여, 수치적 안정감과 실제 체감 대기시간 사이에 극심한 격차가 발생합니다.</p>
+        <p>해석2 (지역 쏠림): 전국 평균 보급률이라는 착시 뒤에는 심각한 지역 격차가 존재합니다. 아파트 단지 등 특정 주거구역에 완속 충전기가 밀집해 평균치를 끌어올릴 뿐, 정작 통행량이 많고 충전 수요가 급증하는 상업지구·고속도로 거점·지방 중소도시 등은 충전기 1대당 담당해야 하는 전기차 수가 과도하게 높아 충전 난항이 집중됩니다.</p>
         <p><a href="https://www.data.go.kr/data/15142951/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국교통안전공단 전국 전기차 차종별 용도별 차량 등록대수(운행차량기준)</a></p>
-        <p><a href="https://www.data.go.kr/data/15086175/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국에너지공단 전기차 급속충전기 지역별 설치 현황</a></p>
+        <p><a href="https://ev.or.kr/nportal/stats/statsDashboard.do#chargeInfraStatus" target="_blank" rel="noopener">출처: 무공해차 통합누리집 - 우리 지역 급속 충전 여건</a></p>
     </section>
-    <section id="chargers" class="panel" aria-labelledby="chargers-title" hidden>
-        <h2 id="chargers-title">지역별 전기차 충전기 대수와 보급률</h2>
-        <div class="chart-box"><canvas id="chargers-chart" role="img" aria-label="전국 각 지역의 전기차 충전기 대수와 충전기 보급률 혼합 그래프"></canvas></div>
-        <p>막대는 지역별 급속 충전기 대수, 선은 전기차 등록대수 대비 급속 충전기 보급률입니다.</p>
+    <section id="slow" class="panel" aria-labelledby="slow-title" hidden>
+        <h2 id="slow-title">지역별 완속충전기 대수와 보급률</h2>
+        <div class="chart-box"><canvas id="slow-chart" role="img" aria-label="전국 각 지역의 완속충전기 대수와 보급률 혼합 그래프"></canvas></div>
+        <p>막대는 50kW 미만 완속충전기 대수, 선은 전기차 등록대수 대비 완속충전기 보급률입니다.</p>
         <p>※ 두 자료의 기준 시점이 달라 실제 현재 보급률과는 차이가 있을 수 있습니다.</p>
+        <p>해석1 (완속/급속): 총 충전기 숫자는 늘어 보급률 지표가 개선되는 것처럼 보이지만, 내막을 보면 수시간이 걸리는 완속 충전기가 대부분입니다. 이동 중 '즉시 충전'이 필요한 순간에 사용할 수 있는 급속 충전기 보급은 턱없이 부족하여, 수치적 안정감과 실제 체감 대기시간 사이에 극심한 격차가 발생합니다.</p>
+        <p>해석2 (지역 쏠림): 전국 평균 보급률이라는 착시 뒤에는 심각한 지역 격차가 존재합니다. 아파트 단지 등 특정 주거구역에 완속 충전기가 밀집해 평균치를 끌어올릴 뿐, 정작 통행량이 많고 충전 수요가 급증하는 상업지구·고속도로 거점·지방 중소도시 등은 충전기 1대당 담당해야 하는 전기차 수가 과도하게 높아 충전 난항이 집중됩니다.</p>
         <p><a href="https://www.data.go.kr/data/15142951/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국교통안전공단 전국 전기차 차종별 용도별 차량 등록대수(운행차량기준)</a></p>
-        <p><a href="https://www.data.go.kr/data/15086175/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국에너지공단 전기차 급속충전기 지역별 설치 현황</a></p>
+        <p><a href="https://ev.or.kr/nportal/stats/statsDashboard.do#chargeInfraStatus" target="_blank" rel="noopener">출처: 무공해차 통합누리집 - 우리 지역 급속 충전 여건</a></p>
+    </section>
+    <section id="fast" class="panel" aria-labelledby="fast-title" hidden>
+        <h2 id="fast-title">지역별 고속충전기 대수와 보급률</h2>
+        <div class="chart-box"><canvas id="fast-chart" role="img" aria-label="전국 각 지역의 고속충전기 대수와 보급률 혼합 그래프"></canvas></div>
+        <p>막대는 50kW 이상 고속충전기 대수, 선은 전기차 등록대수 대비 고속충전기 보급률입니다.</p>
+        <p>※ 두 자료의 기준 시점이 달라 실제 현재 보급률과는 차이가 있을 수 있습니다.</p>
+        <p>해석1 (완속/급속): 총 충전기 숫자는 늘어 보급률 지표가 개선되는 것처럼 보이지만, 내막을 보면 수시간이 걸리는 완속 충전기가 대부분입니다. 이동 중 '즉시 충전'이 필요한 순간에 사용할 수 있는 급속 충전기 보급은 턱없이 부족하여, 수치적 안정감과 실제 체감 대기시간 사이에 극심한 격차가 발생합니다.</p>
+        <p>해석2 (지역 쏠림): 전국 평균 보급률이라는 착시 뒤에는 심각한 지역 격차가 존재합니다. 아파트 단지 등 특정 주거구역에 완속 충전기가 밀집해 평균치를 끌어올릴 뿐, 정작 통행량이 많고 충전 수요가 급증하는 상업지구·고속도로 거점·지방 중소도시 등은 충전기 1대당 담당해야 하는 전기차 수가 과도하게 높아 충전 난항이 집중됩니다.</p>
+        <p><a href="https://www.data.go.kr/data/15142951/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국교통안전공단 전국 전기차 차종별 용도별 차량 등록대수(운행차량기준)</a></p>
+        <p><a href="https://ev.or.kr/nportal/stats/statsDashboard.do#chargeInfraStatus" target="_blank" rel="noopener">출처: 무공해차 통합누리집 - 우리 지역 급속 충전 여건</a></p>
+    </section>
+    <section id="all" class="panel" aria-labelledby="all-title" hidden>
+        <h2 id="all-title">지역별 모든 충전기 대수와 보급률</h2>
+        <div class="chart-box"><canvas id="all-chart" role="img" aria-label="전국 각 지역의 모든 충전기 대수와 보급률 혼합 그래프"></canvas></div>
+        <p>막대는 지역별 모든 충전기 대수, 선은 전기차 등록대수 대비 모든 충전기 보급률입니다.</p>
+        <p>※ 두 자료의 기준 시점이 달라 실제 현재 보급률과는 차이가 있을 수 있습니다.</p>
+        <p>해석1 (완속/급속): 총 충전기 숫자는 늘어 보급률 지표가 개선되는 것처럼 보이지만, 내막을 보면 수시간이 걸리는 완속 충전기가 대부분입니다. 이동 중 '즉시 충전'이 필요한 순간에 사용할 수 있는 급속 충전기 보급은 턱없이 부족하여, 수치적 안정감과 실제 체감 대기시간 사이에 극심한 격차가 발생합니다.</p>
+        <p>해석2 (지역 쏠림): 전국 평균 보급률이라는 착시 뒤에는 심각한 지역 격차가 존재합니다. 아파트 단지 등 특정 주거구역에 완속 충전기가 밀집해 평균치를 끌어올릴 뿐, 정작 통행량이 많고 충전 수요가 급증하는 상업지구·고속도로 거점·지방 중소도시 등은 충전기 1대당 담당해야 하는 전기차 수가 과도하게 높아 충전 난항이 집중됩니다.</p>
+        <p><a href="https://www.data.go.kr/data/15142951/fileData.do" target="_blank" rel="noopener">출처: 공공데이터포털 - 한국교통안전공단 전국 전기차 차종별 용도별 차량 등록대수(운행차량기준)</a></p>
+        <p><a href="https://ev.or.kr/nportal/stats/statsDashboard.do#chargeInfraStatus" target="_blank" rel="noopener">출처: 무공해차 통합누리집 - 우리 지역 급속 충전 여건</a></p>
     </section>
     <p id="status" role="status"></p>
     <script>
@@ -123,7 +149,7 @@
         const buttons = document.querySelectorAll("[data-panel]");
         const panels = document.querySelectorAll(".panel");
         const vehicleFile = "data/한국교통안전공단_전국_전기차_차종별_용도별_차량_등록대수(운행차량기준)_20250407.csv";
-        const chargerFile = "data/한국에너지공단_전기차 급속충전기 지역별 설치 현황_20211231.csv";
+        const chargerFile = "data/우리 지역 급속 충전 여건_2026-09-23.csv";
 
         function showPanel(id) {
             for (const panel of panels) {
@@ -156,6 +182,31 @@
             });
         }
 
+        function normalizeRegion(region) {
+            const name = String(region || "").trim();
+            const aliases = {
+                "서울특별시": "서울",
+                "경기도": "경기",
+                "인천광역시": "인천",
+                "부산광역시": "부산",
+                "대구광역시": "대구",
+                "대전광역시": "대전",
+                "울산광역시": "울산",
+                "세종특별자치시": "세종",
+                "광주광역시": "광주",
+                "전남광주통합특별시": "광주",
+                "강원특별자치도": "강원",
+                "충청북도": "충북",
+                "충청남도": "충남",
+                "전북특별자치도": "전북",
+                "전라남도": "전남",
+                "경상북도": "경북",
+                "경상남도": "경남",
+                "제주특별자치도": "제주"
+            };
+            return aliases[name] || name;
+        }
+
         function readCsv(file) {
             return fetch(file)
                 .then(function (response) {
@@ -175,30 +226,56 @@
                 });
         }
 
-        function drawChart(panelId, canvasId, entries, metric) {
+        function drawChart(panelId, canvasId, entries, metric, color) {
             const chart = new Chart(document.querySelector(canvasId), {
                 type: "bar",
                 data: {
                     labels: entries.labels,
-                    datasets: [
+                    datasets: metric === "all" ? [
                         {
                             type: "bar",
-                            label: metric === "vehicles" ? "전기차 대수" : "전기차 충전기 대수",
-                            data: entries[metric],
-                            backgroundColor: metric === "chargers" ? "#008678" : "#7455e9",
+                            label: "완속충전기 대수",
+                            data: entries.slow,
+                            backgroundColor: "#008678",
+                            yAxisID: "count"
+                        },
+                        {
+                            type: "bar",
+                            label: "고속충전기 대수",
+                            data: entries.fast,
+                            backgroundColor: "#c56200",
                             yAxisID: "count"
                         },
                         {
                             type: "line",
                             label: "충전기 보급률",
                             data: entries.rates,
-                            borderColor: "#c56200",
-                            backgroundColor: "#c56200",
+                            borderColor: "#7455e9",
+                            backgroundColor: "#7455e9",
                             borderWidth: 3,
                             pointRadius: 4,
                             tension: 0.2,
                             yAxisID: "rate"
                         }
+                    ] : [
+                        {
+                            type: "bar",
+                            label: metric === "vehicles" ? "전기차 대수" : entries.metricLabels[metric],
+                            data: entries[metric],
+                            backgroundColor: color,
+                            yAxisID: "count"
+                        },
+                        ...(metric === "vehicles" ? [] : [{
+                            type: "line",
+                            label: "충전기 보급률",
+                            data: entries.rates,
+                            borderColor: metric === "slow" ? "#1976d2" : "#e91e63",
+                            backgroundColor: metric === "slow" ? "#1976d2" : "#e91e63",
+                            borderWidth: 3,
+                            pointRadius: 4,
+                            tension: 0.2,
+                            yAxisID: "rate"
+                        }])
                     ]
                 },
                 options: {
@@ -210,13 +287,13 @@
                             position: "left",
                             title: { display: true, text: "대수" }
                         },
-                        rate: {
+                            ...(metric === "vehicles" ? {} : { rate: {
                             beginAtZero: true,
                             position: "right",
                             title: { display: true, text: "보급률 (%)" },
                             grid: { drawOnChartArea: false },
                             ticks: { callback: function (value) { return value + "%"; } }
-                        }
+                            } })
                     },
                     plugins: {
                         tooltip: {
@@ -241,22 +318,42 @@
             Promise.all([readCsv(vehicleFile), readCsv(chargerFile)])
                 .then(function (data) {
                     const vehicleTotals = sumByRegion(data[0], function (row) {
-                        return row["시군구별"]?.trim().split(/\s+/)[0];
+                        return normalizeRegion(row["시군구별"]?.trim().split(/\s+/)[0]);
                     }, function (row) {
                         return row["연료별"] === "전기" ? Number(row["계"]) || 0 : 0;
                     });
-                    const chargerTotals = sumByRegion(data[1], function (row) {
-                        return row["광역지자체"]?.trim();
+                    const chargerRows = data[1];
+                    const chargerTotals = sumByRegion(chargerRows, function (row) {
+                        return normalizeRegion(row["지역"]);
                     }, function (row) {
-                        return [" 50키로와트 ", " 100키로와트 ", " 100키로와트듀얼 ", " 200키로와트듀얼 ", " 300키로와트이상 "]
-                            .reduce(function (total, key) { return total + (Number(row[key]) || 0); }, 0);
+                        return Number(String(row["합계"] || 0).replace(/,/g, "")) || 0;
                     });
+                    const chargerTypes = {
+                        slow: function (row) {
+                            return ["완속 (30kW 미만)", "중속 (30~49kW)"]
+                                .reduce(function (total, key) { return total + parseNumber(row[key]); }, 0);
+                        },
+                        fast: function (row) {
+                            return ["급속 (50~99kW)", "급속 (100~199kW)", "초급속 (200kW 이상)"]
+                                .reduce(function (total, key) { return total + parseNumber(row[key]); }, 0);
+                        },
+                        all: function (row) { return parseNumber(row["합계"]); }
+                    };
+                    function parseNumber(value) {
+                        return Number(String(value || 0).replace(/,/g, "")) || 0;
+                    }
+                    function chargerMapFor(type) {
+                        return new Map(sumByRegion(chargerRows, function (row) {
+                            return normalizeRegion(row["지역"]);
+                        }, chargerTypes[type]));
+                    }
                     const vehicleMap = new Map(vehicleTotals);
-                    const chargerMap = new Map(chargerTotals);
-                    const regions = [...new Set([...vehicleMap.keys(), ...chargerMap.keys()])];
+                    const allChargerMap = new Map(chargerTotals);
+                    const regions = [...new Set([...vehicleMap.keys(), ...allChargerMap.keys()])];
+                    const vehicleRegions = ["광주", "울산", "서울", "대구", "대전", "전북", "경북", "인천", "전남"];
 
-                    function chartEntries(regions) {
-                        return regions.map(function (region) {
+                    function chartEntries(regions, chargerMap, sortByRate = true) {
+                        const entries = regions.map(function (region) {
                             const vehicles = vehicleMap.get(region) || 0;
                             const chargers = chargerMap.get(region) || 0;
                             return {
@@ -265,24 +362,48 @@
                                 chargers: chargers,
                                 rate: vehicles ? chargers / vehicles * 100 : 0
                             };
-                        }).sort(function (a, b) {
-                            return b.rate - a.rate;
                         });
+                        return sortByRate ? entries.sort(function (a, b) {
+                            return b.rate - a.rate;
+                        }) : entries;
                     }
 
-                    function chartData() {
-                        const entries = chartEntries(regions);
+                    function chartData(chargerMap, metric, selectedRegions = regions, additionalMaps = {}) {
+                        const chartEntriesResult = chartEntries(selectedRegions, chargerMap, metric !== "vehicles");
                         return {
-                            labels: entries.map(function (entry) { return entry.region; }),
-                            vehicles: entries.map(function (entry) { return entry.vehicles; }),
-                            chargers: entries.map(function (entry) { return entry.chargers; }),
-                            rates: entries.map(function (entry) { return entry.rate; })
+                            labels: chartEntriesResult.map(function (entry) { return entry.region; }),
+                            vehicles: chartEntriesResult.map(function (entry) { return entry.vehicles; }),
+                            slow: metric === "slow"
+                                ? chartEntriesResult.map(function (entry) { return entry.chargers; })
+                                : (additionalMaps.slow ? chartEntriesResult.map(function (entry) {
+                                    return additionalMaps.slow.get(entry.region) || 0;
+                                }) : []),
+                            fast: metric === "fast"
+                                ? chartEntriesResult.map(function (entry) { return entry.chargers; })
+                                : (additionalMaps.fast ? chartEntriesResult.map(function (entry) {
+                                    return additionalMaps.fast.get(entry.region) || 0;
+                                }) : []),
+                            rates: chartEntriesResult.map(function (entry) { return entry.rate; }),
+                            all: metric === "all" ? chartEntriesResult.map(function (entry) { return entry.chargers; }) : [],
+                            metricLabels: {
+                                slow: "완속충전기 대수",
+                                fast: "고속충전기 대수",
+                                all: "모든 충전기 대수"
+                            }
                         };
                     }
 
-                    const entries = chartData();
-                    drawChart("vehicles", "#vehicles-chart", entries, "vehicles");
-                    drawChart("chargers", "#chargers-chart", entries, "chargers");
+                    const vehicleEntries = chartData(allChargerMap, "vehicles", vehicleRegions);
+                    drawChart("vehicles", "#vehicles-chart", vehicleEntries, "vehicles", "#7455e9");
+                    ["slow", "fast", "all"].forEach(function (type) {
+                        const entries = type === "all"
+                            ? chartData(chargerMapFor("all"), type, regions, {
+                                slow: chargerMapFor("slow"),
+                                fast: chargerMapFor("fast")
+                            })
+                            : chartData(chargerMapFor(type), type);
+                        drawChart(type, "#" + type + "-chart", entries, type, type === "slow" ? "#008678" : type === "fast" ? "#c56200" : "#2f6f95");
+                    });
                     showPanel("vehicles");
                 })
                 .catch(function (error) {
