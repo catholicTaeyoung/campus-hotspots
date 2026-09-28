@@ -7,7 +7,7 @@ const timerElement = document.getElementById("timer");
 const messageElement = document.getElementById("message");
 const restartButton = document.getElementById("restartButton");
 
-const GAME_TIME = 90;
+const GAME_TIME = 180;
 const BRICK_ROWS = 10;
 const BRICK_COLUMNS = 8;
 const brickWidth = 76;
