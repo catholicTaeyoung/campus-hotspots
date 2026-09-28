@@ -8,6 +8,7 @@ const messageElement = document.getElementById("message");
 const restartButton = document.getElementById("restartButton");
 
 const GAME_TIME = 180;
+const BALL_SPEED_MULTIPLIER = 1.5;
 const BRICK_ROWS = 10;
 const BRICK_COLUMNS = 8;
 const brickWidth = 76;
@@ -183,7 +184,7 @@ function gameLoop(timestamp) {
 	lastTime = timestamp;
 	const displayWidth = canvas.getBoundingClientRect().width;
 	const displayScale = displayWidth > 0 ? canvas.width / displayWidth : 1;
-	const timeScale = (elapsed / 16) * displayScale;
+	const timeScale = (elapsed / 16) * displayScale * BALL_SPEED_MULTIPLIER;
 	movePaddle();
 	updateBall(timeScale);
 	draw();
