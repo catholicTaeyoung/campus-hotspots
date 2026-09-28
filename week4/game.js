@@ -9,6 +9,7 @@ const restartButton = document.getElementById("restartButton");
 
 const GAME_TIME = 180;
 const BALL_SPEED_MULTIPLIER = 1;
+const BALL_SPEED_PIXELS_PER_SECOND = 220;
 const BRICK_ROWS = 10;
 const BRICK_COLUMNS = 8;
 const brickWidth = 76;
@@ -54,8 +55,8 @@ function prepareGame() {
 		x: canvas.width / 2,
 		y: canvas.height - 72,
 		radius: 8,
-		dx: 2 * BALL_SPEED_MULTIPLIER,
-		dy: -2 * BALL_SPEED_MULTIPLIER
+		dx: 1,
+		dy: -1
 	};
 	paddle = { x: canvas.width / 2 - 55, y: canvas.height - 30, width: 110, height: 12, speed: 4 };
 	bricks = createBricks();
@@ -126,17 +127,23 @@ function movePaddle() {
 	paddle.x = Math.max(0, Math.min(canvas.width - paddle.width, paddle.x));
 }
 
-function updateBall(timeScale = 1) {
-	ball.x += ball.dx * timeScale;
-	ball.y += ball.dy * timeScale;
+function updateBall(elapsedSeconds) {
+	const displayWidth = canvas.getBoundingClientRect().width;
+	const canvasScale = displayWidth > 0 ? canvas.width / displayWidth : 1;
+	const distance = BALL_SPEED_PIXELS_PER_SECOND * BALL_SPEED_MULTIPLIER * elapsedSeconds * canvasScale;
+	const directionLength = Math.hypot(ball.dx, ball.dy) || 1;
+	const velocityX = ball.dx / directionLength;
+	const velocityY = ball.dy / directionLength;
+	ball.x += velocityX * distance;
+	ball.y += velocityY * distance;
 
 	if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= canvas.width) ball.dx *= -1;
 	if (ball.y - ball.radius <= 0) ball.dy *= -1;
 
 	if (ball.dy > 0 && ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) {
 		const hitPosition = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
-		ball.dx = hitPosition * 3 * BALL_SPEED_MULTIPLIER;
-		ball.dy = -Math.abs(ball.dy);
+		ball.dx = hitPosition;
+		ball.dy = -Math.abs(1 - Math.abs(hitPosition));
 		ball.y = paddle.y - ball.radius;
 	}
 
@@ -188,11 +195,9 @@ function gameLoop(timestamp) {
 	}
 	const elapsed = Math.max(0, timestamp - lastTime);
 	lastTime = timestamp;
-	const displayWidth = canvas.getBoundingClientRect().width;
-	const displayScale = displayWidth > 0 ? canvas.width / displayWidth : 1;
-	const timeScale = (elapsed / 16) * displayScale;
+	const elapsedSeconds = elapsed / 1000;
 	movePaddle();
-	updateBall(timeScale);
+	updateBall(elapsedSeconds);
 	draw();
 	animationFrame = requestAnimationFrame(gameLoop);
 }
