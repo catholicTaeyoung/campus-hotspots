@@ -181,7 +181,9 @@ function gameLoop(timestamp) {
 	}
 	const elapsed = Math.max(0, timestamp - lastTime);
 	lastTime = timestamp;
-	const timeScale = elapsed / 16;
+	const displayWidth = canvas.getBoundingClientRect().width;
+	const displayScale = displayWidth > 0 ? canvas.width / displayWidth : 1;
+	const timeScale = (elapsed / 16) * displayScale;
 	movePaddle();
 	updateBall(timeScale);
 	draw();
