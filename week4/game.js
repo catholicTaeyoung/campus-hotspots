@@ -8,7 +8,7 @@ const messageElement = document.getElementById("message");
 const restartButton = document.getElementById("restartButton");
 
 const GAME_TIME = 180;
-const BALL_SPEED_MULTIPLIER = 1;
+const BALL_SPEED_MULTIPLIER = 2;
 const BALL_SPEED_PIXELS_PER_SECOND = 220;
 const BRICK_ROWS = 10;
 const BRICK_COLUMNS = 8;
