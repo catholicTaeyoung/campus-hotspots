@@ -50,7 +50,13 @@ function prepareGame() {
 	clearInterval(timerInterval);
 	clearInterval(countdownInterval);
 	clearTimeout(countdownTimeout);
-	ball = { x: canvas.width / 2, y: canvas.height - 72, radius: 8, dx: 2, dy: -2 };
+	ball = {
+		x: canvas.width / 2,
+		y: canvas.height - 72,
+		radius: 8,
+		dx: 2 * BALL_SPEED_MULTIPLIER,
+		dy: -2 * BALL_SPEED_MULTIPLIER
+	};
 	paddle = { x: canvas.width / 2 - 55, y: canvas.height - 30, width: 110, height: 12, speed: 4 };
 	bricks = createBricks();
 	score = 0;
@@ -129,7 +135,7 @@ function updateBall(timeScale = 1) {
 
 	if (ball.dy > 0 && ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) {
 		const hitPosition = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
-		ball.dx = hitPosition * 3;
+		ball.dx = hitPosition * 3 * BALL_SPEED_MULTIPLIER;
 		ball.dy = -Math.abs(ball.dy);
 		ball.y = paddle.y - ball.radius;
 	}
@@ -184,7 +190,7 @@ function gameLoop(timestamp) {
 	lastTime = timestamp;
 	const displayWidth = canvas.getBoundingClientRect().width;
 	const displayScale = displayWidth > 0 ? canvas.width / displayWidth : 1;
-	const timeScale = (elapsed / 16) * displayScale * BALL_SPEED_MULTIPLIER;
+	const timeScale = (elapsed / 16) * displayScale;
 	movePaddle();
 	updateBall(timeScale);
 	draw();
