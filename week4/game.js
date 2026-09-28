@@ -119,9 +119,9 @@ function movePaddle() {
 	paddle.x = Math.max(0, Math.min(canvas.width - paddle.width, paddle.x));
 }
 
-function updateBall() {
-	ball.x += ball.dx;
-	ball.y += ball.dy;
+function updateBall(timeScale = 1) {
+	ball.x += ball.dx * timeScale;
+	ball.y += ball.dy * timeScale;
 
 	if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= canvas.width) ball.dx *= -1;
 	if (ball.y - ball.radius <= 0) ball.dy *= -1;
@@ -179,11 +179,11 @@ function gameLoop(timestamp) {
 		draw();
 		return;
 	}
-	const elapsed = Math.min(timestamp - lastTime, 32);
+	const elapsed = Math.max(0, timestamp - lastTime);
 	lastTime = timestamp;
-	const stepCount = Math.max(1, Math.round(elapsed / 16));
+	const timeScale = elapsed / 16;
 	movePaddle();
-	for (let step = 0; step < stepCount; step += 1) updateBall();
+	updateBall(timeScale);
 	draw();
 	animationFrame = requestAnimationFrame(gameLoop);
 }
