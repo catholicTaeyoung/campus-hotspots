@@ -350,7 +350,9 @@
                     const vehicleMap = new Map(vehicleTotals);
                     const allChargerMap = new Map(chargerTotals);
                     const regions = [...new Set([...vehicleMap.keys(), ...allChargerMap.keys()])];
-                    const vehicleRegions = ["광주", "울산", "서울", "대구", "대전", "전북", "경북", "인천", "전남"];
+                    const vehicleRegions = [...vehicleMap.keys()].sort(function (a, b) {
+                        return (vehicleMap.get(b) || 0) - (vehicleMap.get(a) || 0);
+                    });
 
                     function chartEntries(regions, chargerMap, sortByRate = true) {
                         const entries = regions.map(function (region) {
