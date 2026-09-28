@@ -128,7 +128,9 @@ function movePaddle() {
 }
 
 function updateBall(elapsedSeconds) {
-	const distance = BALL_SPEED_PIXELS_PER_SECOND * BALL_SPEED_MULTIPLIER * elapsedSeconds;
+	const displayWidth = canvas.getBoundingClientRect().width;
+	const canvasScale = displayWidth > 0 ? canvas.width / displayWidth : 1;
+	const distance = BALL_SPEED_PIXELS_PER_SECOND * BALL_SPEED_MULTIPLIER * elapsedSeconds * canvasScale;
 	const directionLength = Math.hypot(ball.dx, ball.dy) || 1;
 	const velocityX = ball.dx / directionLength;
 	const velocityY = ball.dy / directionLength;
