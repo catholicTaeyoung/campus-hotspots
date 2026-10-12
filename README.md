@@ -167,3 +167,15 @@
 - 도움받은 작업과 대표 질문: `tts사이트에 소리를 재미있게 바꿔주는 항목을 추가하고 싶어. "읽기 속도" 항목 아래에 "FX 선택" 을 만들고, None, Flanger, Chorus, Reverb"를 넣어줘. 그리고 각 fx를 적용하고 음성만들기 버튼을 누르면 각 기능이 적용된 소리가 추출되도록 만들어줘. Flanger, Chorus, Reverb 값은 reddit 등 음향 커뮤니티를 참고하여 가장 많이 쓰는 파라미터로 적용해봐`
 - 직접 수정한 부분: `None` · `Flanger` · `Chorus` · `Reverb` FX 선택 기능을 추가했다.
 - 실행하여 확인한 내용: 원하는 FX를 선택하고 `Generate Speech · 음성 만들기` 버튼을 누르면 각 FX가 적용된 소리와 파형이 생성된다.
+
+## 7주차 · 로그인과 DB 게시판 실습
+- 주제: 종강이 오면 꼭 해야 할 나만의 버킷리스트
+- 수정한 파일: `week7/app.py`, `week7/templates/comments.html`, `week7/templates/admin.html`, `week7/static/style.css`
+- 실행 명령: `week7` 폴더에서 32자 이상의 `SECRET_KEY` 환경변수를 설정하고 `python -m pip install -r requirements.txt`, `python -m flask --app app init-db`, `python -m flask --app app run --debug --port 5000`을 순서대로 실행
+- 두 계정의 확인 결과: 글 작성하기, 신고하기, 해시태그로 보기 등 기능이 잘 작동한다.
+- 관리 기능 시험 결과: 연습 계정 글 생성하기, 삭제하기, 차단하기 등 기능이 잘 작동한다.
+- 실행 화면: 
+
+| 실행 화면 | 글 작성 및 보기 | 해시태그 별로 보기 | 관리 화면 |
+|---|---|---|---|
+| 이미지 | ![글 작성 및 보기](images/w7a1.png) | ![해시태그 별로 보기](images/w7a2.png) | ![관리 화면](images/w7a3.png) |
