@@ -8,6 +8,13 @@ const canvas = document.querySelector("#waveform");
 const audio = document.querySelector("#audio");
 const download = document.querySelector("#wav-download");
 
+document.querySelectorAll(".sentence-choice").forEach(function (button) {
+  button.addEventListener("click", function () {
+    document.querySelector("#text").value = button.dataset.text;
+    status.textContent = "문장이 입력되었습니다. 음성 만들기를 눌러 서버에서 합성하세요.";
+  });
+});
+
 function drawWaveform(buffer) {
   const pixelRatio = window.devicePixelRatio || 1;
   const width = Math.max(1, Math.round(canvas.clientWidth * pixelRatio));
@@ -50,9 +57,15 @@ window.addEventListener("resize", () => {
 
 form.addEventListener("submit", async function (event) {
   event.preventDefault();
+  const text = document.querySelector("#text").value.trim();
+  if (!text) {
+    status.textContent = "영어 문장을 입력하거나 문장 선택 버튼을 눌러 주세요.";
+    return;
+  }
   const data = {
-    text: document.querySelector("#text").value,
-    length_scale: Number(document.querySelector("#length-scale").value)
+    text: text,
+    length_scale: Number(document.querySelector("#length-scale").value),
+    fx: document.querySelector("#fx").value
   };
   audio.pause();
   audio.removeAttribute("src");
@@ -106,11 +119,14 @@ form.addEventListener("submit", async function (event) {
     audio.hidden = false;
     download.href = audioURL;
     download.hidden = false;
-    status.textContent = "완료 · WAV를 받아 파형을 그렸습니다.";
+    status.textContent = "완료 · " + document.querySelector("#fx").selectedOptions[0].textContent + " 효과를 적용해 파형을 그렸습니다.";
   } catch (error) {
     result.hidden = true;
     decodedAudio = null;
-    status.textContent = "음성을 확인하지 못했습니다. " + error.message;
+    const message = error instanceof TypeError
+      ? "Flask 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요."
+      : error.message;
+    status.textContent = "음성을 확인하지 못했습니다. " + message;
   } finally {
     controls.disabled = false;
   }

@@ -6,12 +6,75 @@ from time import perf_counter
 import os
 import wave
 
+import numpy as np
 from flask import render_template, request, send_file
 from app import app
 
 voice = None
 voice_lock = Lock()
 MODEL = Path(os.environ.get("TTS_MODEL", str(Path(__file__).parent / "models" / "en_US-lessac-low.onnx")))
+
+
+def _fractional_delay(samples, sample_rate, delay_seconds):
+    positions = np.arange(samples.size, dtype=np.float32)
+    delayed_positions = positions - delay_seconds * sample_rate
+    return np.interp(delayed_positions, positions, samples, left=0.0, right=0.0)
+
+
+def apply_fx(raw_wav, fx):
+    if fx == "none":
+        return raw_wav
+    with wave.open(BytesIO(raw_wav), "rb") as wav_file:
+        params = wav_file.getparams()
+        frames = wav_file.readframes(wav_file.getnframes())
+    if params.sampwidth != 2 or params.nchannels != 1:
+        raise ValueError("FX는 16-bit mono WAV만 지원합니다.")
+    samples = np.frombuffer(frames, dtype="<i2").astype(np.float32) / 32768.0
+    sample_rate = params.framerate
+    positions = np.arange(samples.size, dtype=np.float32)
+    if fx == "flanger":
+        delay = 0.0015 + 0.0045 * (0.5 + 0.5 * np.sin(2 * np.pi * 0.32 * positions / sample_rate))
+        wet = _fractional_delay(samples, sample_rate, delay)
+        feedback_delay = _fractional_delay(wet, sample_rate, delay + 0.001)
+        wet = wet + feedback_delay * 0.30
+        processed = samples * 0.30 + wet * 0.70
+    elif fx == "chorus":
+        delay_one = 0.014 + 0.010 * np.sin(2 * np.pi * 0.72 * positions / sample_rate)
+        delay_two = 0.023 + 0.012 * np.sin(2 * np.pi * 0.91 * positions / sample_rate + np.pi / 2)
+        delay_three = 0.034 + 0.011 * np.sin(2 * np.pi * 1.17 * positions / sample_rate + np.pi)
+        delay_four = 0.046 + 0.009 * np.sin(2 * np.pi * 1.43 * positions / sample_rate + 3 * np.pi / 2)
+        wet = (_fractional_delay(samples, sample_rate, delay_one) +
+               _fractional_delay(samples, sample_rate, delay_two) +
+               _fractional_delay(samples, sample_rate, delay_three) +
+               _fractional_delay(samples, sample_rate, delay_four)) / 4
+        processed = samples * 0.38 + wet * 0.62
+    elif fx == "reverb":
+        tail_samples = round(sample_rate * 0.8)
+        wet = np.zeros(samples.size + tail_samples, dtype=np.float32)
+        hall_taps = ((0.018, 0.26), (0.029, 0.23), (0.043, 0.21), (0.061, 0.18),
+                     (0.083, 0.16), (0.109, 0.14), (0.139, 0.12), (0.173, 0.10),
+                     (0.211, 0.085), (0.257, 0.07), (0.311, 0.055), (0.373, 0.043),
+                     (0.449, 0.034), (0.541, 0.026), (0.647, 0.019), (0.761, 0.013))
+        for delay_seconds, gain in hall_taps:
+            delay_samples = round(delay_seconds * sample_rate)
+            wet[delay_samples:delay_samples + samples.size] += samples * gain
+        damped = np.empty_like(wet)
+        damped[0] = wet[0]
+        for index in range(1, wet.size):
+            damped[index] = wet[index] * 0.25 + damped[index - 1] * 0.75
+        processed = damped * 0.48
+        processed[:samples.size] += samples * 0.62
+    else:
+        raise ValueError("지원하지 않는 FX입니다.")
+    peak = np.max(np.abs(processed))
+    if peak > 0.98:
+        processed *= 0.98 / peak
+    output = np.clip(processed * 32768.0, -32768, 32767).astype("<i2")
+    result = BytesIO()
+    with wave.open(result, "wb") as wav_file:
+        wav_file.setparams(params)
+        wav_file.writeframes(output.tobytes())
+    return result.getvalue()
 
 
 @app.get("/tts")
@@ -35,6 +98,9 @@ def tts():
         return {"error": "음성 길이 배율은 숫자여야 합니다."}, 400
     if length_scale not in (0.8, 1.0, 1.25):
         return {"error": "배율은 0.8, 1.0, 1.25 중 하나입니다."}, 400
+    fx = data.get("fx", "none")
+    if fx not in {"none", "flanger", "chorus", "reverb"}:
+        return {"error": "지원하지 않는 FX입니다."}, 400
     if not MODEL.is_file() or not Path(str(MODEL) + ".json").is_file():
         return {"error": "모델과 설정 파일이 없습니다. 수업 자료의 모델 다운로드 단계를 실행하세요."}, 503
     try:
@@ -52,9 +118,10 @@ def tts():
         with wave.open(buffer, "wb") as wav_file:
             voice.synthesize_wav(text.strip(), wav_file,
                                  syn_config=SynthesisConfig(length_scale=length_scale))
-        buffer.seek(0)
-        response = send_file(buffer, mimetype="audio/wav", download_name="speech.wav", max_age=0)
+        processed_wav = apply_fx(buffer.getvalue(), fx)
+        response = send_file(BytesIO(processed_wav), mimetype="audio/wav", download_name="speech.wav", max_age=0)
         response.headers["Cache-Control"] = "no-store"
+        response.headers["X-FX"] = fx
         response.headers["X-Processing-Ms"] = f"{(perf_counter() - started) * 1000:.1f}"
         return response
     except Exception:
