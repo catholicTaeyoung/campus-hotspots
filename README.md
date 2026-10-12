@@ -121,3 +121,44 @@
 - 도움받은 작업: 팀프로젝트 스타일로 밸런스게임 질문과 답변 만들기, 최종 프로필 점수 계산법 구현하기.
 - 대표 질문 한 개: `10가지 질문의 선택지를 눌렀을 때, 적절하게 잘 조합해서 6가지의 결과 중 1개로 나오게 질문과 선택지를 잘 분석해서 로직을 짜줘.`
 - 직접 수정·검증한 내용: 점수 로직이 제대로 작동하는지, 동점일 경우 어떻게 되는지 검증했다.
+
+
+
+## 6주차 · Flask 서버 계산 실습
+
+### 실습 1 · 이미지 처리
+- Render 주소: https://parkty-hotspots.onrender.com/
+- 휴대폰 확인 화면:
+
+| 휴대폰 화면 | 이미지 |
+|---|---|
+| 휴대폰 확인 화면 | ![휴대폰 화면](images/w6a1.JPG) |
+
+- 내가 수정한 내용: 모던 미니멀리즘 감성 아트 포스터 변환 항목을 추가하고, Gaussian Blur와 Edge Detection을 결합해 처리했다.
+- 브라우저가 보내는 값 / 서버가 돌려주는 값: 브라우저가 이미지, 처리 방법, Blur 커널을 보내고 서버가 처리된 PNG와 알고리즘·서버 처리·왕복 시간을 돌려줬다.
+- 세 처리 방법의 결과: Grayscale은 흑백 이미지, Gaussian Blur는 흐린 이미지, Edge Detection은 윤곽선 이미지를 만들었다.
+- 크기·커널을 바꿔 측정한 시간 표:
+| 조건 | 확인한 결과 |
+|---|---|
+| 작은 이미지·커널 3 | 알고리즘·서버 처리·왕복 시간을 기록했다. |
+| 큰 이미지·커널 15 | 이미지 크기에 따른 처리 시간 변화를 비교했다. |
+| 큰 이미지·커널 51 | Blur 커널 크기에 따른 처리 시간 변화를 비교했다. |
+
+### 실습 2 · 서버 TTS
+- 실행 명령과 로컬 주소: `week6` 폴더에서 `python -m pip install -r requirements-tts.txt`, `python -m piper.download_voices en_US-lessac-low --download-dir models`, `python -m flask --app tts_app run --debug --port 5000`을 실행하고 `http://127.0.0.1:5000/tts`에서 확인했다.
+- 사용한 모델 이름·언어·출처: Piper의 `en_US-lessac-low` 영어 모델을 사용했으며, Piper Voices Hugging Face 모델 카드에서 다운로드했다.
+- 내가 정한 사용 상황과 추가한 요소: 단순한 음성 TTS 변환 사이트가 아닌, 재미있는 FX를 적용하여 소리를 들을 수 있도록 했다. `None` · `Flanger` · `Chorus` · `Reverb`의 FX 선택 기능을 추가했다.
+- 서로 다른 문장 두 개의 파형·길이 확인: 파형이 다름을 확인했다.
+- 생성 시간·음성 길이·WAV 크기가 보이는 결과 화면 스크린샷:
+
+| 조건 | 결과 화면 |
+|---|---|
+| 조금 빠르게, Flanger | ![조금 빠르게 Flanger 결과](images/w6a2.png) |
+| 천천히, Reverb | ![천천히 Reverb 결과](images/w6a3.png) |
+
+- 요청·응답 확인 기록: 브라우저가 `/api/tts`에 `text`, `length_scale`, `fx`를 JSON으로 보내고, 서버가 처리된 `audio/wav`와 `X-Processing-Ms`, `X-FX` 헤더를 반환하는 것을 확인했다.
+
+### AI 활용 (사용했다면)
+- 도움받은 작업과 대표 질문: `tts사이트에 소리를 재미있게 바꿔주는 항목을 추가하고 싶어. "읽기 속도" 항목 아래에 "FX 선택" 을 만들고, None, Flanger, Chorus, Reverb"를 넣어줘. 그리고 각 fx를 적용하고 음성만들기 버튼을 누르면 각 기능이 적용된 소리가 추출되도록 만들어줘. Flanger, Chorus, Reverb 값은 reddit 등 음향 커뮤니티를 참고하여 가장 많이 쓰는 파라미터로 적용해봐`
+- 직접 수정한 부분: None·Flanger·Chorus·Reverb FX 선택 기능을 추가했다.
+- 실행하여 확인한 내용: 원하는 FX를 선택하고 `Generate Speech · 음성 만들기` 버튼을 누르면 각 FX가 적용된 소리와 파형이 생성된다.
