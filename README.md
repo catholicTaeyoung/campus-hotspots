@@ -157,10 +157,9 @@
 - 서로 다른 문장 두 개의 파형·길이 확인: 파형이 다름을 확인했다.
 - 생성 시간·음성 길이·WAV 크기가 보이는 결과 화면 스크린샷:
 
-| 조건 | 결과 화면 |
-|---|---|
-| 조금 빠르게, Flanger | ![조금 빠르게 Flanger 결과](images/w6a3.png) |
-| 천천히, Reverb | ![천천히 Reverb 결과](images/w6a4.png) |
+| 구분 | 조금 빠르게, Flanger | 천천히, Reverb |
+|---|---|---|
+| 결과 화면 | ![조금 빠르게 Flanger 결과](images/w6a3.png) | ![천천히 Reverb 결과](images/w6a4.png) |
 
 - 요청·응답 확인 기록: 브라우저가 `/api/tts`에 `text`, `length_scale`, `fx`를 JSON으로 보내고, 서버가 처리된 `audio/wav`와 `X-Processing-Ms`, `X-FX` 헤더를 반환하는 것을 확인했다.
 
