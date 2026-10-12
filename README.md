@@ -153,12 +153,12 @@
 
 | 조건 | 결과 화면 |
 |---|---|
-| 조금 빠르게, Flanger | ![조금 빠르게 Flanger 결과](images/w6a2.png) |
-| 천천히, Reverb | ![천천히 Reverb 결과](images/w6a3.png) |
+| 조금 빠르게, Flanger | ![조금 빠르게 Flanger 결과](images/w6a3.png) |
+| 천천히, Reverb | ![천천히 Reverb 결과](images/w6a4.png) |
 
 - 요청·응답 확인 기록: 브라우저가 `/api/tts`에 `text`, `length_scale`, `fx`를 JSON으로 보내고, 서버가 처리된 `audio/wav`와 `X-Processing-Ms`, `X-FX` 헤더를 반환하는 것을 확인했다.
 
 ### AI 활용 (사용했다면)
 - 도움받은 작업과 대표 질문: `tts사이트에 소리를 재미있게 바꿔주는 항목을 추가하고 싶어. "읽기 속도" 항목 아래에 "FX 선택" 을 만들고, None, Flanger, Chorus, Reverb"를 넣어줘. 그리고 각 fx를 적용하고 음성만들기 버튼을 누르면 각 기능이 적용된 소리가 추출되도록 만들어줘. Flanger, Chorus, Reverb 값은 reddit 등 음향 커뮤니티를 참고하여 가장 많이 쓰는 파라미터로 적용해봐`
-- 직접 수정한 부분: None·Flanger·Chorus·Reverb FX 선택 기능을 추가했다.
+- 직접 수정한 부분: `None` · `Flanger` · `Chorus` · `Reverb` FX 선택 기능을 추가했다.
 - 실행하여 확인한 내용: 원하는 FX를 선택하고 `Generate Speech · 음성 만들기` 버튼을 누르면 각 FX가 적용된 소리와 파형이 생성된다.

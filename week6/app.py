@@ -92,8 +92,10 @@ def process_image():
     else:
         softened = cv2.GaussianBlur(image, (kernel, kernel), 0)
         gray = cv2.cvtColor(softened, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, 100, 200)
-        result = cv2.bitwise_not(edges)
+        base = cv2.convertScaleAbs(gray, alpha=1.05, beta=5)
+        result = (base // 32) * 32 + 16
+        edges = cv2.Canny(gray, 60, 140)
+        result[edges > 0] = (result[edges > 0] * 0.35).astype(np.uint8)
     compute_ms = (perf_counter() - compute_started) * 1000
     ok, encoded = cv2.imencode(".png", result)
     if not ok:
