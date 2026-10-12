@@ -130,14 +130,20 @@
 - Render 주소: https://parkty-hotspots.onrender.com/
 - 휴대폰 확인 화면:
 
-| 휴대폰 화면 | 이미지 |
-|---|---|
-| 휴대폰 확인 화면 | ![휴대폰 화면](images/w6a1.JPG) |
+| 내용 | 처리 방법 | 처리 결과 |
+|---|---|---|
+| 휴대폰 확인 화면 | ![휴대폰 처리 방법](images/w6a1.JPG) | ![휴대폰 처리 결과](images/w6a2.JPG) |
 
 - 내가 수정한 내용: 모던 미니멀리즘 감성 아트 포스터 변환 항목을 추가하고, Gaussian Blur와 Edge Detection을 결합해 처리했다.
 - 브라우저가 보내는 값 / 서버가 돌려주는 값: 브라우저가 이미지, 처리 방법, Blur 커널을 보내고 서버가 처리된 PNG와 알고리즘·서버 처리·왕복 시간을 돌려줬다.
-- 세 처리 방법의 결과: Grayscale은 흑백 이미지, Gaussian Blur는 흐린 이미지, Edge Detection은 윤곽선 이미지를 만들었다.
+- 세 처리 방법의 결과:
+
+| 이미지 | 원본 | Grayscale | Gaussian Blur | Edge Detection | 모던 미니멀리즘 감성 아트 포스터 |
+|---|---|---|---|---|---|
+| 결과 | ![원본 이미지](images/w6a5.JPG) | ![Grayscale 결과](images/w6a6.png) | ![Gaussian Blur 결과](images/w6a7.png) | ![Edge Detection 결과](images/w6a8.png) | ![아트 포스터 결과](images/w6a9.png) |
+
 - 크기·커널을 바꿔 측정한 시간 표:
+
 | 조건 | 확인한 결과 |
 |---|---|
 | 작은 이미지·커널 3 | 알고리즘·서버 처리·왕복 시간을 기록했다. |
