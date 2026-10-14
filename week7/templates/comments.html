@@ -32,13 +32,27 @@
         <li class="comment-card">
           <div class="comment-meta"><strong>{{ comment['username'] }}</strong><time>{{ comment['created_at'] }} UTC</time></div>
           <p class="comment-text">{% for part in comment['content_parts'] %}{% if part['tag'] %}<a class="hashtag" href="{{ url_for('comments', tag=part['tag']) }}">{{ part['text'] }}</a>{% else %}{{ part['text'] }}{% endif %}{% endfor %}</p>
+          <div class="comment-actions">
+            {% if current_user %}
+              <form method="post" action="{{ url_for('toggle_like', comment_id=comment['id']) }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+                {% if tag %}<input type="hidden" name="tag" value="{{ tag }}">{% endif %}
+                <button class="like-button{% if comment['liked'] %} liked{% endif %}" type="submit" aria-label="좋아요 {{ comment['like_count'] }}개">{{ '♥' if comment['liked'] else '♡' }} <span>{{ comment['like_count'] }}</span></button>
+              </form>
+              {% if current_user['id'] != comment['author_id'] %}
+                <button class="report-trigger" type="button" data-report-target="report-form-{{ comment['id'] }}" aria-expanded="false">신고하기</button>
+              {% endif %}
+            {% else %}
+              <span class="like-count" aria-label="좋아요 {{ comment['like_count'] }}개">♡ <span>{{ comment['like_count'] }}</span></span>
+            {% endif %}
+          </div>
           {% if current_user and current_user['id'] == comment['author_id'] %}
             <form method="post" action="{{ url_for('delete_comment', comment_id=comment['id']) }}">
               <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
               <button class="delete-button" type="submit">내 글 삭제</button>
             </form>
           {% elif current_user %}
-            <form class="report-form" method="post" action="{{ url_for('report_comment', comment_id=comment['id']) }}">
+            <form id="report-form-{{ comment['id'] }}" class="report-form" method="post" action="{{ url_for('report_comment', comment_id=comment['id']) }}" hidden>
               <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
               <label for="reason-{{ comment['id'] }}">신고 이유 · 3~100자</label>
               <input id="reason-{{ comment['id'] }}" name="reason" minlength="3" maxlength="100" required placeholder="예: 반복 광고">
@@ -52,4 +66,5 @@
     <p class="empty">아직 글이 없습니다. 첫 의견을 남겨 보세요.</p>
   {% endif %}
 </section>
+<script src="{{ url_for('static', filename='comments.js') }}" defer></script>
 {% endblock %}

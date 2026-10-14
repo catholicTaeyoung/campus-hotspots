@@ -16,6 +16,16 @@ CREATE TABLE IF NOT EXISTS comments (
 
 CREATE INDEX IF NOT EXISTS comments_created_idx ON comments(created_at DESC, id DESC);
 
+CREATE TABLE IF NOT EXISTS comment_likes (
+    id INTEGER PRIMARY KEY,
+    comment_id INTEGER NOT NULL REFERENCES comments(id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(comment_id, user_id)
+);
+
+CREATE INDEX IF NOT EXISTS comment_likes_comment_idx ON comment_likes(comment_id);
+
 CREATE TABLE IF NOT EXISTS reports (
     id INTEGER PRIMARY KEY,
     comment_id INTEGER NOT NULL REFERENCES comments(id) ON DELETE CASCADE,

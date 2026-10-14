@@ -165,15 +165,30 @@ def template_values():
 @app.get("/comments")
 def comments():
     tag = normalize_tag(request.args.get("tag"))
-    rows = get_db().execute(
+    db = get_db()
+    rows = db.execute(
         """SELECT comments.id, comments.content, comments.created_at,
-                  users.id AS author_id, users.username
+                  users.id AS author_id, users.username,
+                  COUNT(comment_likes.id) AS like_count
            FROM comments JOIN users ON comments.user_id = users.id
+           LEFT JOIN comment_likes ON comment_likes.comment_id = comments.id
            WHERE (? = '' OR instr(lower(comments.content), lower(?)) > 0)
+           GROUP BY comments.id
            ORDER BY comments.created_at DESC, comments.id DESC"""
         , (tag, tag)
     ).fetchall()
-    return render_template("comments.html", comments=add_content_parts(rows), tag=tag)
+    liked_ids = set()
+    if g.user:
+        liked_ids = {
+            row["comment_id"] for row in db.execute(
+                "SELECT comment_id FROM comment_likes WHERE user_id = ?",
+                (g.user["id"],),
+            )
+        }
+    prepared = add_content_parts(rows)
+    for comment in prepared:
+        comment["liked"] = comment["id"] in liked_ids
+    return render_template("comments.html", comments=prepared, tag=tag)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -243,6 +258,30 @@ def add_comment():
     )
     db.commit()
     return redirect(url_for("comments"))
+
+
+@app.post("/comments/<int:comment_id>/like")
+def toggle_like(comment_id):
+    if g.user is None:
+        abort(401, description="좋아요를 누르려면 로그인하세요.")
+    tag = normalize_tag(request.form.get("tag"))
+    db = get_db()
+    comment = db.execute("SELECT id FROM comments WHERE id = ?", (comment_id,)).fetchone()
+    if comment is None:
+        abort(404, description="글을 찾을 수 없습니다.")
+    like = db.execute(
+        "SELECT id FROM comment_likes WHERE comment_id = ? AND user_id = ?",
+        (comment_id, g.user["id"]),
+    ).fetchone()
+    if like:
+        db.execute("DELETE FROM comment_likes WHERE id = ?", (like["id"],))
+    else:
+        db.execute(
+            "INSERT INTO comment_likes (comment_id, user_id) VALUES (?, ?)",
+            (comment_id, g.user["id"]),
+        )
+    db.commit()
+    return redirect(url_for("comments", tag=tag) if tag else url_for("comments"))
 
 
 @app.post("/comments/<int:comment_id>/delete")

@@ -170,6 +170,7 @@
 
 ## 7주차 · 로그인과 DB 게시판 실습
 - 주제: 종강이 오면 꼭 해야 할 나만의 버킷리스트
+- 수정한 기능: 해시태그 기능과 좋아요 기능을 추가했다. 해시태그를 누르면 해당 해시태그 댓글만 모아서 볼 수 있다.
 - 수정한 파일: `week7/app.py`, `week7/templates/comments.html`, `week7/templates/admin.html`, `week7/static/style.css`
 - 실행 명령: `week7` 폴더에서 32자 이상의 `SECRET_KEY` 환경변수를 설정하고 `python -m pip install -r requirements.txt`, `python -m flask --app app init-db`, `python -m flask --app app run --debug --port 5000`을 순서대로 실행
 - 두 계정의 확인 결과: 글 작성하기, 신고하기, 해시태그로 보기 등 기능이 잘 작동한다.
